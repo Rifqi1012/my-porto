@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import { useCallback, useState } from 'react';
 import { ContactFooterSection } from './components/ContactFooterSection';
 import { EditorialCursor } from './components/EditorialCursor';
@@ -36,6 +37,7 @@ export function App() {
       </main>
 
       <ContactFooterSection />
+      <Analytics />
     </>
   );
 }
