@@ -58,7 +58,7 @@ export function WorksSection(_props: WorksSectionProps) {
           }
         });
       },
-      { threshold: 0.14, rootMargin: '0px 0px -6% 0px' }
+      { threshold: 0.05, rootMargin: '0px 0px -5% 0px' }
     );
 
     cardRefs.current.forEach((el) => {
@@ -170,6 +170,7 @@ export function WorksSection(_props: WorksSectionProps) {
                 data-active={isHighlighted ? 'true' : 'false'}
                 onMouseEnter={() => setActiveIndex(idx)}
                 onFocus={() => setActiveIndex(idx)}
+                onClick={() => setActiveIndex(idx)}
                 className="hanga-work-dossier group relative overflow-hidden"
               >
                 {/* Out-of-the-Box Full-Card Karakuri Shōji Entrance Doors:
