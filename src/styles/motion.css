@@ -1,0 +1,4690 @@
+/* Editorial motion choreography matching MOTION 3. Every non-essential animation disables under prefers-reduced-motion. */
+.split-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.split-char,
+.split-line {
+  display: inline-block;
+}
+
+.hairline-draw {
+  transform-origin: left center;
+}
+
+.curtain-media {
+  overflow: hidden;
+}
+
+.curtain-media img {
+  display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Out-of-the-Box 4-Panel Japanese Karakuri Sanmon & Kumiko Gate Preloader Choreography */
+  .shoji-hud-card,
+  .shoji-skip-btn {
+    clip-path: polygon(
+      8px 0,
+      calc(100% - 8px) 0,
+      100% 8px,
+      100% calc(100% - 8px),
+      calc(100% - 8px) 100%,
+      8px 100%,
+      0 calc(100% - 8px),
+      0 8px
+    );
+  }
+
+  .shoji-gate-stage[data-phase='loading'] {
+    opacity: 0;
+    transform: scale(1.045);
+    pointer-events: none;
+  }
+
+  .shoji-gate-stage[data-phase='gate-in'],
+  .shoji-gate-stage[data-phase='gate-open'] {
+    opacity: 1;
+    transform: scale(1);
+    transition:
+      opacity 380ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 460ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Top Ranma beam & Bottom Shikii threshold slide vertically out of frame when the gate opens */
+  .shoji-top-ranma,
+  .shoji-bottom-shikii {
+    will-change: transform;
+    transition: transform 880ms cubic-bezier(0.76, 0, 0.24, 1);
+  }
+
+  .shoji-top-ranma[data-phase='gate-open'] {
+    transform: translate3d(0, -105%, 0);
+  }
+
+  .shoji-bottom-shikii[data-phase='gate-open'] {
+    transform: translate3d(0, 105%, 0);
+  }
+
+  /* Main inner Shoji/Kumiko doors part left & right with ultra-smooth exponential deceleration */
+  .shoji-door {
+    will-change: transform;
+    transition: transform 1080ms cubic-bezier(0.65, 0, 0.15, 1);
+  }
+
+  .shoji-door-left[data-phase='gate-open'] {
+    transform: translate3d(-103%, 0, 0);
+    box-shadow: 24px 0 48px rgba(20, 20, 19, 0.24);
+  }
+
+  .shoji-door-right[data-phase='gate-open'] {
+    transform: translate3d(103%, 0, 0);
+    box-shadow: -24px 0 48px rgba(20, 20, 19, 0.24);
+  }
+
+  /* Secondary outer Kumiko wing panels trail behind the main doors with 90ms parallax stagger */
+  .shoji-wing {
+    will-change: transform;
+    transition: transform 1140ms cubic-bezier(0.65, 0, 0.15, 1) 75ms;
+  }
+
+  .shoji-wing-left[data-phase='gate-open'] {
+    transform: translate3d(-103%, 0, 0);
+  }
+
+  .shoji-wing-right[data-phase='gate-open'] {
+    transform: translate3d(103%, 0, 0);
+  }
+
+  /* Center Karakuri Lock Medallion: rotates 45deg to unlock during gate-in, then scales & dissolves on gate-open */
+  .shoji-medallion-ring {
+    clip-path: polygon(
+      28% 0%,
+      72% 0%,
+      100% 28%,
+      100% 72%,
+      72% 100%,
+      28% 100%,
+      0% 72%,
+      0% 28%
+    );
+    transition: transform 440ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .shoji-medallion-core {
+    clip-path: polygon(
+      6px 0,
+      calc(100% - 6px) 0,
+      100% 6px,
+      100% calc(100% - 6px),
+      calc(100% - 6px) 100%,
+      6px 100%,
+      0 calc(100% - 6px),
+      0 6px
+    );
+    transition: transform 440ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .shoji-center-medallion[data-phase='gate-in'] .shoji-medallion-ring {
+    transform: rotate(90deg) scale(1.06);
+  }
+
+  .shoji-center-medallion[data-phase='gate-in'] .shoji-medallion-core {
+    transform: rotate(-45deg);
+  }
+
+  .shoji-center-medallion[data-phase='gate-open'] {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.55) rotate(45deg);
+    transition:
+      opacity 220ms ease,
+      transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Horizontal Kannuki lock bars retract outward into the doors when unlocked */
+  .shoji-kannuki-bar {
+    transition: width 380ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
+  }
+
+  .shoji-karakuri-half[data-phase='gate-in'] .shoji-kannuki-bar,
+  .shoji-karakuri-half[data-phase='gate-open'] .shoji-kannuki-bar {
+    width: 1.25rem;
+  }
+
+  .shoji-loader-hud {
+    transition:
+      opacity 260ms ease,
+      transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .shoji-loader-hud[data-phase='gate-in'],
+  .shoji-loader-hud[data-phase='gate-open'] {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    pointer-events: none;
+  }
+
+  .shoji-seam-light {
+    opacity: 0;
+    transform: translateX(-50%) scaleY(0);
+    transform-origin: center center;
+  }
+
+  .shoji-seam-light[data-phase='gate-open'] {
+    animation: shoji-seam-flash 420ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes shoji-seam-flash {
+    0% {
+      opacity: 0;
+      transform: translateX(-50%) scaleY(0.12);
+    }
+    38% {
+      opacity: 0.72;
+      transform: translateX(-50%) scaleY(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(-50%) scaleY(1);
+    }
+  }
+
+  /* Masked character & line slide-up reveals */
+  .split-char[data-entered='false'],
+  .split-line[data-entered='false'] {
+    transform: translateY(108%);
+    opacity: 0;
+  }
+
+  .split-char[data-entered='true'],
+  .split-line[data-entered='true'] {
+    transform: translateY(0);
+    opacity: 1;
+    transition:
+      transform 760ms cubic-bezier(0.22, 1, 0.36, 1) var(--stagger, 0ms),
+      opacity 540ms ease var(--stagger, 0ms);
+  }
+
+  /* Out-of-the-Box 5-Panel Japanese Byōbu / Tanzaku Folding Screen & Ukiyo-e Kentō Multi-Strip Portrait Reveal */
+  .hero-wireframe-stage {
+    perspective: 1200px;
+  }
+
+  .hero-wireframe-unveil {
+    transform-style: preserve-3d;
+  }
+
+  /* Main unified portrait image stays hidden while the 5 Byōbu strips assemble, then locks in seamlessly at 1180ms */
+  .hero-main-portrait-img[data-entered='false'] {
+    opacity: 0;
+  }
+
+  .hero-main-portrait-img[data-entered='true'] {
+    opacity: 1;
+    transition: opacity 260ms ease 1120ms;
+  }
+
+  /* 5-Panel Byōbu Accordion Stage: visible during assembly (0..1350ms), then dissolves cleanly */
+  .hero-byobu-stage {
+    perspective: 1100px;
+    transform-style: preserve-3d;
+    z-index: 6;
+  }
+
+  .hero-byobu-stage[data-entered='false'] {
+    opacity: 1;
+  }
+
+  .hero-byobu-stage[data-entered='true'] {
+    opacity: 0;
+    transition: opacity 320ms ease 1280ms;
+  }
+
+  .hero-byobu-strip {
+    will-change: transform, opacity, clip-path;
+    backface-visibility: hidden;
+  }
+
+  /* 5 vertical 20% slices of the portrait */
+  .hero-byobu-strip[data-slice='0'] {
+    clip-path: inset(0 79.8% 0 0);
+    transform-origin: left bottom;
+  }
+
+  .hero-byobu-strip[data-slice='1'] {
+    clip-path: inset(0 59.8% 0 20%);
+    transform-origin: center top;
+  }
+
+  .hero-byobu-strip[data-slice='2'] {
+    clip-path: inset(0 39.8% 0 40%);
+    transform-origin: center bottom;
+  }
+
+  .hero-byobu-strip[data-slice='3'] {
+    clip-path: inset(0 19.8% 0 60%);
+    transform-origin: center top;
+  }
+
+  .hero-byobu-strip[data-slice='4'] {
+    clip-path: inset(0 0 0 80%);
+    transform-origin: right bottom;
+  }
+
+  /* Initial displaced 3D Byōbu folding screen poses before reveal */
+  .hero-byobu-strip[data-entered='false'][data-slice='2'] {
+    opacity: 0;
+    transform: translate3d(0, 92px, 40px) scale(1.04);
+  }
+
+  .hero-byobu-strip[data-entered='false'][data-slice='1'] {
+    opacity: 0;
+    transform: translate3d(-16px, -84px, -30px) rotateY(34deg);
+  }
+
+  .hero-byobu-strip[data-entered='false'][data-slice='3'] {
+    opacity: 0;
+    transform: translate3d(16px, -84px, -30px) rotateY(-34deg);
+  }
+
+  .hero-byobu-strip[data-entered='false'][data-slice='0'] {
+    opacity: 0;
+    transform: translate3d(-34px, 76px, -20px) rotateY(-24deg);
+  }
+
+  .hero-byobu-strip[data-entered='false'][data-slice='4'] {
+    opacity: 0;
+    transform: translate3d(34px, 76px, -20px) rotateY(24deg);
+  }
+
+  /* Staggered choreographed assembly as the Sanmon gate opens */
+  .hero-byobu-strip[data-entered='true'] {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotateY(0deg) scale(1);
+  }
+
+  .hero-byobu-strip[data-entered='true'][data-slice='2'] {
+    transition:
+      transform 860ms cubic-bezier(0.22, 1, 0.36, 1) 220ms,
+      opacity 420ms ease 220ms;
+  }
+
+  .hero-byobu-strip[data-entered='true'][data-slice='1'],
+  .hero-byobu-strip[data-entered='true'][data-slice='3'] {
+    transition:
+      transform 920ms cubic-bezier(0.22, 1, 0.36, 1) 340ms,
+      opacity 460ms ease 340ms;
+  }
+
+  .hero-byobu-strip[data-entered='true'][data-slice='0'],
+  .hero-byobu-strip[data-entered='true'][data-slice='4'] {
+    transition:
+      transform 960ms cubic-bezier(0.22, 1, 0.36, 1) 460ms,
+      opacity 480ms ease 460ms;
+  }
+
+  /* Four Vertical Kumiko Joinery Seam Hairlines & Sliding Diamond Pins during assembly */
+  .hero-byobu-seam {
+    position: absolute;
+    top: 4%;
+    bottom: 0;
+    width: 1px;
+    border-left: 1px dashed var(--ink-primary);
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  .hero-byobu-seam[data-seam='1'],
+  .hero-byobu-seam[data-seam='4'] {
+    transform-origin: center bottom;
+  }
+
+  .hero-byobu-seam[data-seam='2'],
+  .hero-byobu-seam[data-seam='3'] {
+    transform-origin: center top;
+  }
+
+  .hero-byobu-stage[data-entered='true'] .hero-byobu-seam {
+    animation: byobu-seam-guide 1180ms cubic-bezier(0.22, 1, 0.36, 1) 240ms 1 forwards;
+  }
+
+  .hero-byobu-seam-diamond {
+    position: absolute;
+    left: -3.5px;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    background-color: var(--bg-canvas);
+    border: 1.5px solid var(--ink-primary);
+    transform: rotate(45deg);
+  }
+
+  @keyframes byobu-seam-guide {
+    0% {
+      opacity: 0;
+      transform: scaleY(0.15);
+    }
+    30% {
+      opacity: 0.72;
+      transform: scaleY(1);
+    }
+    78% {
+      opacity: 0.55;
+      transform: scaleY(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scaleY(1);
+    }
+  }
+
+  /* Ceremonial Hanko Registration Lock Stamp (見当合) flashing as the 5 strips snap into alignment */
+  .hero-byobu-hanko-flash {
+    position: absolute;
+    top: 62%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.4);
+    opacity: 0;
+  }
+
+  .hero-byobu-stage[data-entered='true'] .hero-byobu-hanko-flash {
+    animation: byobu-hanko-stamp 760ms cubic-bezier(0.22, 1, 0.36, 1) 760ms 1 forwards;
+  }
+
+  .hero-byobu-hanko-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    border: 1.5px solid var(--ink-primary);
+    background-color: var(--ink-primary);
+    color: var(--bg-canvas);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    box-shadow:
+      0 0 0 3px var(--bg-canvas),
+      0 0 0 4.5px var(--ink-primary);
+  }
+
+  .hero-byobu-hanko-box::before {
+    content: attr(data-kanji);
+  }
+
+  @keyframes byobu-hanko-stamp {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(1.6) rotate(-8deg);
+    }
+    28% {
+      opacity: 0.95;
+      transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    }
+    72% {
+      opacity: 0.9;
+      transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.92) rotate(0deg);
+    }
+  }
+
+  /* Dual opposing Kumiko laser scan lines (bottom-to-top AND top-to-bottom meeting in the middle) */
+  .hero-scan-line,
+  .hero-scan-line-counter {
+    position: absolute;
+    left: 4%;
+    right: 4%;
+    z-index: 20;
+    height: 1.5px;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--ink-primary) 18%,
+      var(--ink-primary) 82%,
+      transparent 100%
+    );
+    opacity: 0;
+  }
+
+  .hero-scan-line[data-entered='true'] {
+    animation: hero-scan-sweep 1180ms cubic-bezier(0.22, 1, 0.36, 1) 260ms 1 forwards;
+  }
+
+  .hero-scan-line-counter[data-entered='true'] {
+    animation: hero-scan-sweep-down 1180ms cubic-bezier(0.22, 1, 0.36, 1) 320ms 1 forwards;
+  }
+
+  .profile-scan-line[data-reveal='visible'] {
+    animation: hero-scan-sweep 1100ms cubic-bezier(0.22, 1, 0.36, 1) 80ms 1 forwards;
+  }
+
+  @keyframes hero-scan-sweep {
+    0% {
+      top: 98%;
+      opacity: 0;
+    }
+    16% {
+      opacity: 0.92;
+    }
+    82% {
+      opacity: 0.72;
+    }
+    100% {
+      top: 2%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes hero-scan-sweep-down {
+    0% {
+      top: 4%;
+      opacity: 0;
+    }
+    18% {
+      opacity: 0.85;
+    }
+    82% {
+      opacity: 0.65;
+    }
+    100% {
+      top: 96%;
+      opacity: 0;
+    }
+  }
+
+  .hero-portrait-tilt {
+    transform-origin: center bottom;
+  }
+
+  /* Out-of-the-Box Japanese Karakuri / Kamon Halo / Ukiyo-e Kentō Portrait Hover Choreography:
+     Zero fractional bitmap scale() or 3D tilt on the 1px wireframe line art -> 100% vibration-free */
+  .hero-portrait-hover {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* 1. Sacred Japanese Kamon / Asanoha Geometric Sunburst Halo behind the portrait head */
+  .hero-kamon-halo {
+    position: absolute;
+    top: -15%;
+    left: 50%;
+    z-index: 1;
+    width: clamp(19rem, 76%, 30.5rem);
+    height: clamp(19rem, 76%, 30.5rem);
+    pointer-events: none;
+    opacity: 0;
+    will-change: transform, opacity;
+    transform: translate3d(-50%, 12px, 0) scale(0.76);
+    transition:
+      opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 580ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-portrait-tilt[data-hovered='true'] .hero-kamon-halo {
+    opacity: 0.92;
+    transform: translate3d(-50%, 0, 0) scale(1);
+  }
+
+  /* Ceremonial Kamon Sunburst Halo opening pulse ONLY while byobu entrance is active */
+  .hero-kamon-halo[data-entered='true'][data-ready='false'] {
+    animation: kamon-entrance-ceremony 1480ms cubic-bezier(0.22, 1, 0.36, 1) 260ms 1;
+  }
+
+  @keyframes kamon-entrance-ceremony {
+    0% {
+      opacity: 0;
+      transform: translate3d(-50%, 16px, 0) scale(0.55) rotate(-22deg);
+    }
+    38% {
+      opacity: 0.85;
+      transform: translate3d(-50%, 0, 0) scale(1.03) rotate(0deg);
+    }
+    72% {
+      opacity: 0.72;
+      transform: translate3d(-50%, 0, 0) scale(1) rotate(6deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(-50%, 10px, 0) scale(0.74) rotate(12deg);
+    }
+  }
+
+  .hero-kamon-ring-outer {
+    transform-origin: 180px 180px;
+    animation: kamon-rotate-cw 32s linear infinite;
+  }
+
+  .hero-kamon-ring-inner {
+    transform-origin: 180px 180px;
+    animation: kamon-rotate-ccw 24s linear infinite;
+  }
+
+  @keyframes kamon-rotate-cw {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes kamon-rotate-ccw {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
+  /* 2. Left & Right Unfurling Japanese Ofuda / Tanzaku Vertical Talisman Banners */
+  .hero-ofuda-tag {
+    position: absolute;
+    top: 12%;
+    z-index: 2;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 6px;
+    background-color: var(--bg-canvas);
+    border: 1.5px solid var(--ink-primary);
+    box-shadow:
+      inset 0 0 0 2px var(--bg-canvas),
+      inset 0 0 0 3px var(--border-control);
+    pointer-events: none;
+    opacity: 0;
+    will-change: transform, opacity;
+    clip-path: polygon(
+      5px 0,
+      calc(100% - 5px) 0,
+      100% 5px,
+      100% 100%,
+      50% calc(100% - 6px),
+      0 100%,
+      0 5px
+    );
+    transition:
+      opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 540ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-ofuda-left {
+    left: 4%;
+    transform: translate3d(32px, 8px, 0) rotate(4deg);
+  }
+
+  .hero-ofuda-right {
+    right: 4%;
+    transform: translate3d(-32px, 8px, 0) rotate(-4deg);
+  }
+
+  .hero-portrait-tilt[data-hovered='true'] .hero-ofuda-left {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(-2deg);
+  }
+
+  .hero-portrait-tilt[data-hovered='true'] .hero-ofuda-right {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(2deg);
+  }
+
+  .hero-ofuda-seal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background-color: var(--ink-primary);
+    color: var(--bg-canvas);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .hero-ofuda-seal::before {
+    content: attr(data-kanji);
+  }
+
+  .hero-ofuda-vertical {
+    writing-mode: vertical-rl;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    line-height: 1;
+    color: var(--ink-primary);
+  }
+
+  .hero-ofuda-vertical::before {
+    content: attr(data-kanji);
+  }
+
+  .hero-ofuda-diamond {
+    width: 5px;
+    height: 5px;
+    border: 1px solid var(--ink-primary);
+    transform: rotate(45deg);
+    margin-bottom: 4px;
+  }
+
+  /* 3. Samurai Zanzō / Ukiyo-e Kentō Multi-Plate Woodblock Afterimages:
+     Pure horizontal translate3d (no fractional scale) so wireframe lines never shimmer */
+  .hero-zanzo-plate {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0);
+    transition:
+      transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-portrait-tilt[data-hovered='true'] .hero-zanzo-left {
+    opacity: 0.22;
+    transform: translate3d(-15px, 0, 0);
+  }
+
+  .hero-portrait-tilt[data-hovered='true'] .hero-zanzo-right {
+    opacity: 0.22;
+    transform: translate3d(15px, 0, 0);
+  }
+
+  /* Ukiyo-e Kentō Woodblock Dual-Plate Convergence ONLY during initial portrait reveal */
+  .hero-zanzo-left[data-entered='true'][data-ready='false'] {
+    animation: zanzo-converge-left 1180ms cubic-bezier(0.22, 1, 0.36, 1) 260ms 1;
+  }
+
+  .hero-zanzo-right[data-entered='true'][data-ready='false'] {
+    animation: zanzo-converge-right 1180ms cubic-bezier(0.22, 1, 0.36, 1) 260ms 1;
+  }
+
+  @keyframes zanzo-converge-left {
+    0% {
+      opacity: 0;
+      transform: translate3d(-52px, 0, 0);
+    }
+    30% {
+      opacity: 0.38;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes zanzo-converge-right {
+    0% {
+      opacity: 0;
+      transform: translate3d(52px, 0, 0);
+    }
+    30% {
+      opacity: 0.38;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  /* 4. Crisp Vector Japanese Kentō (見当) Registration Frame Locks on hover */
+  .hero-kento-locks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 15;
+  }
+
+  .hero-kento-bracket {
+    position: absolute;
+    top: 10%;
+    width: 22px;
+    height: 22px;
+    border-color: var(--ink-primary);
+    opacity: 0;
+    will-change: transform, opacity;
+    transition:
+      opacity 380ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 460ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-kento-bracket-tl {
+    left: 24%;
+    border-top: 1.5px solid;
+    border-left: 1.5px solid;
+    transform: translate3d(-12px, -8px, 0);
+  }
+
+  .hero-kento-bracket-tr {
+    right: 24%;
+    border-top: 1.5px solid;
+    border-right: 1.5px solid;
+    transform: translate3d(12px, -8px, 0);
+  }
+
+  .hero-portrait-hover[data-hovered='true'] .hero-kento-bracket-tl,
+  .hero-portrait-hover[data-hovered='true'] .hero-kento-bracket-tr {
+    opacity: 0.78;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .hero-kento-collar-seal {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 9px;
+    border: 1.5px solid var(--ink-primary);
+    background-color: var(--bg-canvas);
+    color: var(--ink-primary);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    line-height: 1.2;
+    box-shadow: 0 0 0 2px var(--bg-canvas);
+    opacity: 0;
+    will-change: transform, opacity;
+    transform: translate3d(-50%, 8px, 0);
+    transition:
+      opacity 380ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 460ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-kento-collar-seal::before {
+    content: attr(data-kanji);
+  }
+
+  .hero-portrait-hover[data-hovered='true'] .hero-kento-collar-seal {
+    opacity: 1;
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  /* 5. Monumental Katakana Fusuma Door Parting when portrait is hovered */
+  .hero-fusuma-char {
+    will-change: transform, opacity;
+    transition:
+      transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hero-wordmark-focus[data-portrait-hovered='true'] .hero-fusuma-char[data-side='left'] {
+    transform: translate3d(-26px, 0, 0);
+  }
+
+  .hero-wordmark-focus[data-portrait-hovered='true'] .hero-fusuma-char[data-side='right'] {
+    transform: translate3d(26px, 0, 0);
+  }
+
+  .hero-wordmark-focus[data-portrait-hovered='true'] .hero-fusuma-char[data-side='center'] {
+    opacity: 0.24;
+  }
+
+  /* Minimalist editorial catalog underline sweep on Hero tech stack items */
+  .tech-index-label::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 1px;
+    background-color: var(--ink-primary);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .tech-index-item:hover .tech-index-label::after {
+    transform: scaleX(1);
+  }
+}
+
+/* Out-of-the-Box Section 02 (02 PROYEK) Entrance Choreography & Karakuri Shōji-Bako Reveal */
+.works-kamoi-draw-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: var(--border-hairline);
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .works-kamoi-header[data-entered='false'] .works-kamoi-draw-line {
+    transform: scaleX(0);
+  }
+
+  .works-kamoi-header[data-entered='true'] .works-kamoi-draw-line {
+    transform: scaleX(1);
+    transition: transform 780ms cubic-bezier(0.22, 1, 0.36, 1) 40ms;
+  }
+
+  .works-kamoi-header[data-entered='false'] .works-chapter-stamp {
+    opacity: 0;
+    transform: scale(1.45) rotate(-14deg);
+  }
+
+  .works-kamoi-header[data-entered='true'] .works-chapter-stamp {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    transition:
+      transform 560ms cubic-bezier(0.22, 1, 0.36, 1) 120ms,
+      opacity 360ms ease 120ms;
+  }
+
+  .works-kamoi-header[data-entered='false'] .works-header-crest {
+    opacity: 0;
+    transform: scaleX(0.6);
+  }
+
+  .works-kamoi-header[data-entered='true'] .works-header-crest {
+    opacity: 1;
+    transform: scaleX(1);
+    transition:
+      transform 680ms cubic-bezier(0.22, 1, 0.36, 1) 180ms,
+      opacity 420ms ease 180ms;
+  }
+
+  .works-title-stage[data-entered='false'] .works-eyebrow-reveal {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+
+  .works-title-stage[data-entered='true'] .works-eyebrow-reveal {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition:
+      transform 620ms cubic-bezier(0.22, 1, 0.36, 1) 80ms,
+      opacity 480ms ease 80ms;
+  }
+
+  .works-title-stage[data-entered='false'] .works-guide-reveal {
+    opacity: 0;
+    transform: translate3d(18px, 0, 0);
+  }
+
+  .works-title-stage[data-entered='true'] .works-guide-reveal {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition:
+      transform 680ms cubic-bezier(0.22, 1, 0.36, 1) 200ms,
+      opacity 520ms ease 200ms;
+  }
+}
+
+.hanga-work-dossier {
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  clip-path: polygon(
+    12px 0,
+    calc(100% - 12px) 0,
+    100% 12px,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    12px 100%,
+    0 calc(100% - 12px),
+    0 12px
+  );
+  box-shadow:
+    inset 0 0 0 3px var(--bg-canvas),
+    inset 0 0 0 4px var(--border-hairline);
+  transition:
+    border-color 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 820ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 580ms ease;
+}
+
+/* Full-Card Karakuri Shōji Entrance Doors that part open when the user scrolls to each project dossier */
+.dossier-entrance-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.dossier-entrance-door {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.3%;
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-recessed);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 44px,
+      var(--border-hairline) 44px,
+      var(--border-hairline) 45px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 44px,
+      var(--border-hairline) 44px,
+      var(--border-hairline) 45px
+    );
+  will-change: transform;
+  transition: transform 940ms cubic-bezier(0.65, 0, 0.15, 1) 140ms;
+}
+
+.dossier-entrance-door-left {
+  left: 0;
+  justify-content: flex-end;
+  border-right: 1.5px solid var(--ink-primary);
+}
+
+.dossier-entrance-door-right {
+  right: 0;
+  justify-content: flex-start;
+  border-left: 1.5px solid var(--ink-primary);
+}
+
+.dossier-entrance-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 14%;
+  border-top: 1px solid var(--border-control);
+  background-color: var(--bg-canvas);
+  opacity: 0.75;
+}
+
+.dossier-entrance-tag {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.dossier-entrance-tag::before {
+  content: attr(data-kanji);
+}
+
+.dossier-entrance-tag-left {
+  margin-right: 34px;
+}
+
+.dossier-entrance-tag-right {
+  margin-left: 34px;
+}
+
+.dossier-entrance-seam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background-color: var(--ink-primary);
+  transform: translateX(-50%) scaleY(1);
+  transition:
+    transform 460ms cubic-bezier(0.22, 1, 0.36, 1) 60ms,
+    opacity 380ms ease 120ms;
+}
+
+.dossier-entrance-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  transition:
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1) 40ms,
+    opacity 360ms ease 140ms;
+}
+
+.dossier-entrance-seal-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  transform: rotate(45deg);
+}
+
+.dossier-entrance-seal-core {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.dossier-entrance-seal-core::before {
+  content: attr(data-kanji);
+}
+
+/* Unlocked / Entered state when the user scrolls to the project card */
+.hanga-work-dossier[data-card-entered='true'] .dossier-entrance-door-left {
+  transform: translate3d(-104%, 0, 0);
+}
+
+.hanga-work-dossier[data-card-entered='true'] .dossier-entrance-door-right {
+  transform: translate3d(104%, 0, 0);
+}
+
+.hanga-work-dossier[data-card-entered='true'] .dossier-entrance-seam {
+  opacity: 0;
+  transform: translateX(-50%) scaleY(0);
+}
+
+.hanga-work-dossier[data-card-entered='true'] .dossier-entrance-seal {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.45) rotate(90deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hanga-work-dossier[data-card-entered='false'] {
+    opacity: 0.35;
+    transform: translate3d(0, 36px, 0);
+  }
+
+  .hanga-work-dossier[data-card-entered='true'] {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .hanga-work-dossier[data-card-entered='false'] .dossier-visual-reveal {
+    opacity: 0;
+    transform: translate3d(-22px, 0, 0);
+  }
+
+  .hanga-work-dossier[data-card-entered='true'] .dossier-visual-reveal {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition:
+      transform 820ms cubic-bezier(0.22, 1, 0.36, 1) 260ms,
+      opacity 620ms ease 260ms;
+  }
+
+  .hanga-work-dossier[data-card-entered='false'] .dossier-info-reveal {
+    opacity: 0;
+    transform: translate3d(22px, 0, 0);
+  }
+
+  .hanga-work-dossier[data-card-entered='true'] .dossier-info-reveal {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition:
+      transform 820ms cubic-bezier(0.22, 1, 0.36, 1) 340ms,
+      opacity 620ms ease 340ms;
+  }
+}
+
+.hanga-work-dossier:hover {
+  box-shadow:
+    0 16px 32px -18px rgba(20, 20, 19, 0.2),
+    inset 0 0 0 3px var(--bg-canvas),
+    inset 0 0 0 4px var(--ink-primary);
+}
+
+.hanga-dossier-header {
+  background-color: var(--bg-recessed);
+}
+
+.hanga-daiji-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  clip-path: polygon(
+    3px 0,
+    calc(100% - 3px) 0,
+    100% 3px,
+    100% calc(100% - 3px),
+    calc(100% - 3px) 100%,
+    3px 100%,
+    0 calc(100% - 3px),
+    0 3px
+  );
+  transition:
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hanga-daiji-seal::before {
+  content: attr(data-kanji);
+}
+
+.hanga-work-dossier:hover .hanga-daiji-seal,
+.hanga-work-dossier[data-active='true'] .hanga-daiji-seal {
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+}
+
+/* Full-Coverage Japanese Fusuma (襖) Sliding Gate Doors over Project Visual:
+   Closed (50.2% left + 50.2% right) at rest; parts wide open when hovered or focused */
+.hanga-fusuma-shutter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 15;
+  width: 50.2%;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  background-color: var(--bg-canvas);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 38px,
+      var(--border-hairline) 38px,
+      var(--border-hairline) 39px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 48px,
+      var(--border-hairline) 48px,
+      var(--border-hairline) 49px
+    );
+  will-change: transform;
+  transition:
+    transform 640ms cubic-bezier(0.65, 0, 0.15, 1),
+    box-shadow 420ms ease;
+}
+
+.hanga-fusuma-left {
+  left: 0;
+  justify-content: flex-end;
+  border-right: 1px solid var(--ink-primary);
+}
+
+.hanga-fusuma-right {
+  right: 0;
+  justify-content: flex-start;
+  border-left: 1px solid var(--ink-primary);
+}
+
+.hanga-work-dossier:hover .hanga-fusuma-left,
+.hanga-work-dossier:focus-within .hanga-fusuma-left {
+  transform: translate3d(-103%, 0, 0);
+  box-shadow: 12px 0 24px rgba(20, 20, 19, 0.16);
+}
+
+.hanga-work-dossier:hover .hanga-fusuma-right,
+.hanga-work-dossier:focus-within .hanga-fusuma-right {
+  transform: translate3d(103%, 0, 0);
+  box-shadow: -12px 0 24px rgba(20, 20, 19, 0.16);
+}
+
+/* Lower Koshi-ita wooden kick-panel across the bottom of each Fusuma gate door */
+.hanga-fusuma-koshiita {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 18%;
+  border-top: 1px solid var(--border-control);
+  background-color: var(--bg-recessed);
+  opacity: 0.7;
+}
+
+.hanga-fusuma-handle {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+
+.hanga-fusuma-handle-left {
+  padding-right: 26px;
+}
+
+.hanga-fusuma-handle-right {
+  padding-left: 26px;
+}
+
+.hanga-fusuma-plaque {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  border: 1px solid var(--border-control);
+  background-color: var(--bg-canvas);
+}
+
+.hanga-fusuma-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  font-size: 8.5px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.hanga-fusuma-seal::before {
+  content: attr(data-kanji);
+}
+
+.hanga-fusuma-kanji {
+  writing-mode: vertical-rl;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  color: var(--ink-primary);
+}
+
+.hanga-fusuma-kanji::before {
+  content: attr(data-kanji);
+}
+
+/* Center Karakuri Lock Medallion on the closed project gate */
+.hanga-gate-center-lock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 18;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  transition:
+    transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 280ms ease;
+}
+
+.hanga-gate-lock-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px dashed var(--ink-primary);
+  background-color: var(--bg-canvas);
+  opacity: 0.85;
+  transform: rotate(45deg);
+}
+
+.hanga-gate-lock-core {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.hanga-gate-lock-core::before {
+  content: attr(data-kanji);
+}
+
+.hanga-work-dossier:hover .hanga-gate-center-lock,
+.hanga-work-dossier:focus-within .hanga-gate-center-lock {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.45) rotate(90deg);
+}
+
+.hanga-project-img {
+  transition: filter 420ms ease;
+}
+
+.hanga-work-dossier:hover .hanga-project-img {
+  filter: contrast(1.02);
+}
+
+/* Vertical Tategaki Cartouche in Right Wing */
+.hanga-vertical-cartouche {
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 5px;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-recessed);
+}
+
+.hanga-cartouche-top {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  font-size: 9.5px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.hanga-cartouche-top::before {
+  content: attr(data-kanji);
+}
+
+.hanga-cartouche-text {
+  writing-mode: vertical-rl;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  line-height: 1;
+  color: var(--ink-primary);
+}
+
+.hanga-cartouche-text::before {
+  content: attr(data-kanji);
+}
+
+/* Carved Kifuda Tech Stack Tags inside Works Dossier */
+.hanga-stack-tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 4px 10px;
+  border: 1px solid var(--ink-primary);
+  background-color: var(--bg-recessed);
+  color: var(--ink-primary);
+  clip-path: polygon(
+    4px 0,
+    calc(100% - 4px) 0,
+    100% 4px,
+    100% calc(100% - 4px),
+    calc(100% - 4px) 100%,
+    4px 100%,
+    0 calc(100% - 4px),
+    0 4px
+  );
+}
+
+/* Sculpted Japanese Woodblock Action Plaque Button (Zero-Jitter Damped Hover) */
+.hanga-action-plaque {
+  position: relative;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  clip-path: polygon(
+    7px 0,
+    calc(100% - 7px) 0,
+    100% 7px,
+    100% calc(100% - 7px),
+    calc(100% - 7px) 100%,
+    7px 100%,
+    0 calc(100% - 7px),
+    0 7px
+  );
+  box-shadow:
+    inset 0 0 0 2px var(--bg-canvas),
+    inset 0 0 0 3px var(--border-hairline);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hanga-action-plaque:hover,
+.hanga-action-plaque:focus-visible {
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  box-shadow:
+    inset 0 0 0 2px var(--ink-primary),
+    inset 0 0 0 3px var(--bg-canvas);
+}
+
+.hanga-action-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid currentColor;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hanga-action-plaque:hover .hanga-action-seal {
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  border-color: var(--bg-canvas);
+}
+
+.hanga-action-arrow,
+.hanga-action-plaque svg {
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hanga-action-plaque:hover .hanga-action-arrow {
+  transform: translate3d(2px, -2px, 0);
+}
+
+.hanga-action-seal::before {
+  content: attr(data-kanji);
+}
+
+/* Non-interactive Japanese Confidentiality Plaque for Private / Internal Projects (秘・非公開) */
+.hanga-private-plaque {
+  border: 1.5px dashed var(--border-control);
+  background-color: var(--bg-recessed);
+  color: var(--ink-secondary);
+  clip-path: polygon(
+    7px 0,
+    calc(100% - 7px) 0,
+    100% 7px,
+    100% calc(100% - 7px),
+    calc(100% - 7px) 100%,
+    7px 100%,
+    0 calc(100% - 7px),
+    0 7px
+  );
+}
+
+.hanga-private-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--ink-primary);
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.hanga-private-seal::before {
+  content: attr(data-kanji);
+}
+
+/* Section 03 (03 PRINSIP / QuoteBand): Nocturnal Japanese Yūgen (幽玄), Maru-mado & Scroll-Drawn Enso Stage */
+.quote-dark-chapter-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: var(--band-dark-ink);
+  color: var(--band-dark-bg);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  clip-path: polygon(
+    3px 0,
+    calc(100% - 3px) 0,
+    100% 3px,
+    100% calc(100% - 3px),
+    calc(100% - 3px) 100%,
+    3px 100%,
+    0 calc(100% - 3px),
+    0 3px
+  );
+}
+
+.quote-dark-chapter-seal::before {
+  content: attr(data-kanji);
+}
+
+.quote-yugen-stage {
+  --qx: 50%;
+  --qy: 50%;
+  border: 1px solid var(--band-dark-border);
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      var(--band-dark-surface) 0%,
+      var(--band-dark-bg) 76%
+    );
+  transition:
+    border-color 420ms ease,
+    box-shadow 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.quote-yugen-stage:hover {
+  border-color: var(--band-dark-control);
+  box-shadow:
+    0 26px 60px -24px rgba(0, 0, 0, 0.75),
+    inset 0 0 0 1px rgba(245, 244, 240, 0.08);
+}
+
+/* Interactive Andon (行灯) Paper-Lantern Pointer Glow */
+.quote-andon-spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    380px circle at var(--qx, 50%) var(--qy, 50%),
+    rgba(245, 244, 240, 0.085),
+    transparent 70%
+  );
+  transition: opacity 380ms ease;
+}
+
+.quote-yugen-stage:hover .quote-andon-spotlight {
+  opacity: 1;
+}
+
+/* Four Mechanical Corner Registration Brackets on the Dark Stage */
+.quote-corner-tick {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  z-index: 12;
+  pointer-events: none;
+  border-color: var(--band-dark-control);
+  opacity: 0.65;
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 320ms ease,
+    opacity 320ms ease;
+}
+
+.quote-corner-tl {
+  top: 10px;
+  left: 10px;
+  border-top: 1.5px solid;
+  border-left: 1.5px solid;
+}
+
+.quote-corner-tr {
+  top: 10px;
+  right: 10px;
+  border-top: 1.5px solid;
+  border-right: 1.5px solid;
+}
+
+.quote-corner-bl {
+  bottom: 10px;
+  left: 10px;
+  border-bottom: 1.5px solid;
+  border-left: 1.5px solid;
+}
+
+.quote-corner-br {
+  bottom: 10px;
+  right: 10px;
+  border-bottom: 1.5px solid;
+  border-right: 1.5px solid;
+}
+
+.quote-yugen-stage:hover .quote-corner-tick {
+  border-color: var(--band-dark-ink);
+  opacity: 1;
+}
+
+.quote-yugen-stage:hover .quote-corner-tl {
+  transform: translate3d(4px, 4px, 0);
+}
+
+.quote-yugen-stage:hover .quote-corner-tr {
+  transform: translate3d(-4px, 4px, 0);
+}
+
+.quote-yugen-stage:hover .quote-corner-bl {
+  transform: translate3d(4px, -4px, 0);
+}
+
+.quote-yugen-stage:hover .quote-corner-br {
+  transform: translate3d(-4px, -4px, 0);
+}
+
+/* Left & Right Minimalist Translucent Shoji Screen Wings */
+.quote-shoji-wing {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 56px;
+  pointer-events: none;
+  opacity: 0.22;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 36px,
+      var(--band-dark-border) 36px,
+      var(--band-dark-border) 37px
+    );
+  transition:
+    opacity 420ms ease,
+    width 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.quote-shoji-wing-left {
+  left: 0;
+  border-right: 1px solid var(--band-dark-border);
+}
+
+.quote-shoji-wing-right {
+  right: 0;
+  border-left: 1px solid var(--band-dark-border);
+}
+
+.quote-yugen-stage:hover .quote-shoji-wing {
+  opacity: 0.42;
+  width: 68px;
+}
+
+/* Center Enso & Karesansui Astrolabe Stage */
+.quote-enso-stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  width: clamp(16.5rem, 37vw, 24.5rem);
+  height: clamp(16.5rem, 37vw, 24.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--band-dark-ink);
+  transform: translate(-50%, -50%);
+}
+
+.quote-enso-svg {
+  opacity: 0.16;
+  transform: scale(0.95) rotate(0deg);
+  transition:
+    opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 860ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.quote-yugen-stage:hover .quote-enso-svg {
+  opacity: 0.34;
+  transform: scale(1.04) rotate(18deg);
+}
+
+.quote-enso-brush {
+  transition: stroke-dashoffset 180ms linear;
+}
+
+.quote-karesansui-ring,
+.quote-kamon-diamond {
+  opacity: 0.38;
+  transform-origin: 170px 170px;
+  transition:
+    transform 780ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 460ms ease;
+}
+
+.quote-yugen-stage:hover .quote-karesansui-outer {
+  opacity: 0.75;
+  transform: scale(1.05);
+}
+
+.quote-yugen-stage:hover .quote-kamon-diamond {
+  opacity: 0.72;
+  transform: rotate(45deg) scale(0.94);
+}
+
+/* Center Zen Kanji '道' Watermark materializing on hover */
+.quote-center-kanji {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-family: var(--font-display);
+  font-size: clamp(5.5rem, 11vw, 8.5rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--band-dark-ink);
+  opacity: 0.03;
+  transform: translate(-50%, -50%) scale(0.84);
+  transition:
+    opacity 540ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 680ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.quote-center-kanji::before {
+  content: attr(data-kanji);
+}
+
+.quote-yugen-stage:hover .quote-center-kanji {
+  opacity: 0.085;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Left & Right Vertical Tategaki Calligraphic Pillars */
+.quote-tategaki-pillar {
+  position: absolute;
+  top: 50%;
+  z-index: 8;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.5;
+  transition:
+    opacity 380ms ease,
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.quote-tategaki-left {
+  left: 24px;
+  transform: translate3d(0, -50%, 0);
+}
+
+.quote-tategaki-right {
+  right: 24px;
+  transform: translate3d(0, -50%, 0);
+}
+
+.quote-yugen-stage:hover .quote-tategaki-left {
+  opacity: 0.92;
+  transform: translate3d(6px, -50%, 0);
+}
+
+.quote-yugen-stage:hover .quote-tategaki-right {
+  opacity: 0.92;
+  transform: translate3d(-6px, -50%, 0);
+}
+
+.quote-diamond-pin {
+  width: 5px;
+  height: 5px;
+  border: 1px solid var(--band-dark-control);
+  transform: rotate(45deg);
+  transition:
+    border-color 320ms ease,
+    background-color 320ms ease,
+    transform 460ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.quote-yugen-stage:hover .quote-diamond-pin {
+  border-color: var(--band-dark-ink);
+  background-color: var(--band-dark-ink);
+  transform: rotate(135deg) scale(1.15);
+}
+
+.quote-tategaki-text {
+  writing-mode: vertical-rl;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  color: var(--band-dark-muted);
+  transition: color 360ms ease;
+}
+
+.quote-yugen-stage:hover .quote-tategaki-text {
+  color: var(--band-dark-ink);
+}
+
+/* Word Tokens & Hover Illumination Override */
+.quote-word-token {
+  transition:
+    color 320ms ease,
+    opacity 320ms ease,
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    text-shadow 380ms ease;
+}
+
+.quote-yugen-stage:hover .quote-word-token {
+  color: var(--band-dark-ink) !important;
+  opacity: 1 !important;
+  transform: translate3d(0, 0px, 0) !important;
+  text-shadow: 0 0 28px rgba(245, 244, 240, 0.18);
+}
+
+/* Japanese Kagi-Kakko (「 」) Corner Quotation Brackets */
+.quote-kagikakko {
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 3vw, 2.4rem);
+  font-style: normal;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--band-dark-muted);
+  opacity: 0.55;
+  user-select: none;
+  transition:
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 340ms ease,
+    opacity 340ms ease;
+}
+
+.quote-kagikakko-open {
+  display: block;
+  text-align: left;
+  margin-bottom: -0.25rem;
+}
+
+.quote-kagikakko-close {
+  display: block;
+  text-align: right;
+  margin-top: -0.15rem;
+}
+
+.quote-yugen-stage:hover .quote-kagikakko {
+  color: var(--band-dark-ink);
+  opacity: 0.95;
+}
+
+.quote-yugen-stage:hover .quote-kagikakko-open {
+  transform: translate3d(-8px, -5px, 0);
+}
+
+.quote-yugen-stage:hover .quote-kagikakko-close {
+  transform: translate3d(8px, 5px, 0);
+}
+
+.quote-chigiri-joint {
+  width: 10px;
+  height: 6px;
+  background-color: var(--band-dark-ink);
+  clip-path: polygon(0 0, 48% 36%, 100% 0, 100% 100%, 48% 64%, 0 100%);
+  opacity: 0.85;
+  transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.quote-yugen-stage:hover .quote-chigiri-joint {
+  transform: scale(1.18);
+}
+
+.quote-rakkan-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--band-dark-ink);
+  background-color: var(--band-dark-ink);
+  color: var(--band-dark-bg);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.quote-rakkan-seal::before {
+  content: attr(data-kanji);
+}
+
+.quote-yugen-stage:hover .quote-rakkan-seal {
+  transform: rotate(-8deg) scale(1.12);
+}
+
+/* Bottom Horizon Sumi-Beam that expands from center on hover */
+.quote-horizon-beam {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  bottom: 0;
+  z-index: 12;
+  height: 1.5px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--band-dark-ink) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform: scaleX(0.2);
+  transition:
+    transform 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 360ms ease;
+}
+
+.quote-yugen-stage:hover .quote-horizon-beam {
+  opacity: 0.75;
+  transform: scaleX(1);
+}
+
+/* Section 04 (04 KONTAK / ContactFooterSection): Japanese Shoin-zukuri & Fumi-bako Correspondence Pavilion */
+.contact-fumibako-pavilion {
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  clip-path: polygon(
+    10px 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    10px 100%,
+    0 calc(100% - 10px),
+    0 10px
+  );
+  box-shadow:
+    inset 0 0 0 3px var(--bg-canvas),
+    inset 0 0 0 4px var(--border-hairline);
+}
+
+.contact-marumado-watermark {
+  position: absolute;
+  top: -12%;
+  right: -8%;
+  width: 240px;
+  height: 240px;
+  color: var(--ink-primary);
+  opacity: 0.06;
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.contact-fumibako-pavilion:hover .contact-marumado-watermark {
+  transform: rotate(28deg) scale(1.05);
+}
+
+.contact-hikyaku-box {
+  border: 1px solid var(--border-control);
+  border-left: 3px solid var(--ink-primary);
+  background-color: var(--bg-recessed);
+}
+
+.contact-secondary-plaque {
+  border: 1.5px solid var(--border-control);
+  background-color: var(--bg-recessed);
+  color: var(--ink-primary);
+  clip-path: polygon(
+    7px 0,
+    calc(100% - 7px) 0,
+    100% 7px,
+    100% calc(100% - 7px),
+    calc(100% - 7px) 100%,
+    7px 100%,
+    0 calc(100% - 7px),
+    0 7px
+  );
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.contact-secondary-plaque:hover,
+.contact-secondary-plaque:focus-visible {
+  border-color: var(--ink-primary);
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+}
+
+.contact-secondary-plaque:hover .hanga-action-seal {
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  border-color: var(--bg-canvas);
+}
+
+/* Hanging Japanese Kifuda Channel Tiles in Right Wing (Zero Hit-Box Jitter) */
+.contact-kifuda-tile {
+  display: flex;
+  min-height: 58px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  clip-path: polygon(
+    6px 0,
+    calc(100% - 6px) 0,
+    100% 6px,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    6px 100%,
+    0 calc(100% - 6px),
+    0 6px
+  );
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+a.contact-kifuda-tile:hover,
+a.contact-kifuda-tile:focus-visible {
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  box-shadow:
+    inset 0 0 0 2px var(--ink-primary),
+    inset 0 0 0 3px var(--bg-canvas);
+}
+
+.contact-kifuda-tile-muted {
+  border-style: dashed;
+  border-color: var(--border-control);
+  color: var(--ink-secondary);
+}
+
+.contact-kifuda-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid currentColor;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.contact-kifuda-seal::before {
+  content: attr(data-kanji);
+}
+
+a.contact-kifuda-tile:hover .contact-kifuda-seal {
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  border-color: var(--bg-canvas);
+}
+
+/* Japanese Shoin Form Inputs */
+.shoin-field-input {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--border-control);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  font-size: 0.92rem;
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+}
+
+.shoin-field-input:focus {
+  outline: none;
+  border-color: var(--ink-primary);
+  box-shadow: inset 0 0 0 1px var(--ink-primary);
+}
+
+.shoin-field-input[aria-invalid='true'] {
+  border-color: var(--status-error);
+}
+
+/* Grand Finale Colophon Wordmark & Rotating Maru-mado Sun Halo */
+.contact-sun-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: clamp(13rem, 26vw, 20rem);
+  height: clamp(13rem, 26vw, 20rem);
+  opacity: 0.12;
+  transform: translate(-50%, -50%) scale(0.92) rotate(0deg);
+  transition:
+    opacity 480ms ease,
+    transform 840ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.contact-colophon-stage:hover .contact-sun-halo {
+  opacity: 0.28;
+  transform: translate(-50%, -50%) scale(1.04) rotate(35deg);
+}
+
+.contact-fusuma-char {
+  transition: transform 540ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.contact-colophon-stage:hover .contact-fusuma-char[data-side='left'] {
+  transform: translate3d(-14px, 0, 0);
+}
+
+.contact-colophon-stage:hover .contact-fusuma-char[data-side='right'] {
+  transform: translate3d(14px, 0, 0);
+}
+
+/* Section 01 (01 PROFIL) Japanese Kakejiku & Karakuri Maru-mado Portrait Frame Hover Choreography */
+.profile-beriwaku-mat {
+  box-shadow:
+    inset 0 0 0 2px var(--bg-canvas),
+    inset 0 0 0 3px var(--border-hairline);
+}
+
+/* Prevent 1px wireframe line shimmer by keeping the portrait bitmap at 1:1 scale on hover */
+.koseki-dossier-frame:hover .profile-wireframe-img {
+  transform: none !important;
+}
+
+/* 1. Four Kazari-Kanagu Corner Brackets that snap inward on hover like a Japanese Kento viewfinder */
+.profile-kanagu-corner {
+  opacity: 0.72;
+  transition:
+    transform 440ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 320ms ease;
+}
+
+.koseki-dossier-frame:hover .profile-kanagu-tl {
+  opacity: 1;
+  transform: translate3d(4px, 4px, 0);
+}
+
+.koseki-dossier-frame:hover .profile-kanagu-tr {
+  opacity: 1;
+  transform: translate3d(-4px, 4px, 0) rotate(90deg);
+}
+
+.koseki-dossier-frame:hover .profile-kanagu-br {
+  opacity: 1;
+  transform: translate3d(-4px, -4px, 0) rotate(180deg);
+}
+
+.koseki-dossier-frame:hover .profile-kanagu-bl {
+  opacity: 1;
+  transform: translate3d(4px, -4px, 0) rotate(-90deg);
+}
+
+/* 2. Sacred Maru-mado Zen Moon Window & Rotating Kamon Astrolabe behind the portrait head */
+.profile-marumado-halo {
+  position: absolute;
+  top: 7%;
+  left: 50%;
+  z-index: 4;
+  width: 68%;
+  aspect-ratio: 1 / 1;
+  opacity: 0.14;
+  transform: translate3d(-50%, 0, 0) scale(0.86) rotate(0deg);
+  transition:
+    opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.koseki-dossier-frame:hover .profile-marumado-halo {
+  opacity: 0.46;
+  transform: translate3d(-50%, 0, 0) scale(1) rotate(45deg);
+}
+
+/* 3. Left & Right Sliding Ofuda / Shoji Vertical Tategaki Wing Shutters */
+.profile-ofuda-wing {
+  position: absolute;
+  top: 16%;
+  z-index: 22;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 5px;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  box-shadow: 0 8px 20px -8px rgba(20, 20, 19, 0.25);
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    transform 460ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 340ms ease;
+}
+
+.profile-ofuda-wing-left {
+  left: 10px;
+  transform: translate3d(-130%, 0, 0);
+}
+
+.profile-ofuda-wing-right {
+  right: 10px;
+  transform: translate3d(130%, 0, 0);
+}
+
+.koseki-dossier-frame:hover .profile-ofuda-wing-left,
+.koseki-dossier-frame:hover .profile-ofuda-wing-right {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.profile-ofuda-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.profile-ofuda-seal::before {
+  content: attr(data-kanji);
+}
+
+.profile-ofuda-kanji {
+  writing-mode: vertical-rl;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  line-height: 1;
+  color: var(--ink-primary);
+}
+
+.profile-ofuda-kanji::before {
+  content: attr(data-kanji);
+}
+
+/* 4. Horizontal Kento Woodblock Registration Scan Line sweeping top-to-bottom on hover */
+.profile-kento-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 18;
+  height: 1.5px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--ink-primary) 20%,
+    var(--ink-primary) 80%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform: translate3d(0, -10px, 0);
+  transition:
+    transform 820ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 280ms ease;
+}
+
+.koseki-dossier-frame:hover .profile-kento-scanline {
+  opacity: 0.65;
+  transform: translate3d(0, 340px, 0);
+}
+
+/* 5. Bottom-Right Double Hanko Seal Stack with Spring Stamp Animation on Hover */
+.profile-hanko-stack {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 22;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-hanko-sub {
+  opacity: 0;
+  transform: translate3d(0, 6px, 0) scale(0.75) rotate(-14deg);
+  transition:
+    transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1) 70ms,
+    opacity 260ms ease 70ms;
+}
+
+.koseki-dossier-frame:hover .profile-hanko-sub {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+}
+
+/* Bottom Kumiko Calibration Gauge on Works Dossier */
+.hanga-bottom-gauge {
+  position: relative;
+  height: 3px;
+  width: 100%;
+  background-color: var(--border-hairline);
+  overflow: hidden;
+}
+
+.hanga-bottom-gauge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--ink-primary);
+  transform: scaleX(0.18);
+  transform-origin: left center;
+  transition: transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hanga-work-dossier:hover .hanga-bottom-gauge::after {
+  transform: scaleX(1);
+}
+
+/* Out-of-the-Box Section 01 (01 PROFIL) Japanese Kakejiku (掛軸 / Hanging Scroll) & Shokunin Koseki (職人戸籍 / Craftsman Dossier) */
+.profile-ranma-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 12px;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  clip-path: polygon(
+    7px 0,
+    calc(100% - 7px) 0,
+    100% 7px,
+    100% calc(100% - 7px),
+    calc(100% - 7px) 100%,
+    7px 100%,
+    0 calc(100% - 7px),
+    0 7px
+  );
+  box-shadow:
+    inset 0 0 0 2px var(--bg-canvas),
+    inset 0 0 0 3px var(--border-hairline);
+}
+
+.profile-chapter-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  clip-path: polygon(
+    3px 0,
+    calc(100% - 3px) 0,
+    100% 3px,
+    100% calc(100% - 3px),
+    calc(100% - 3px) 100%,
+    3px 100%,
+    0 calc(100% - 3px),
+    0 3px
+  );
+}
+
+.profile-chapter-seal::before {
+  content: attr(data-kanji);
+}
+
+.profile-ranma-divider {
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  max-width: 28rem;
+}
+
+/* Scroll-Scrubbed Shinobi Makimono (忍び巻物 / Ninja Scroll) Stage for Section 01 PROFIL:
+   Driven by lerped 60fps rAF CSS variables (--scroll-open, --scroll-clip, --scroll-rot) */
+.byobu-makimono-stage {
+  --scroll-open: 0%;
+  --scroll-clip: 100%;
+  --scroll-rot: 0deg;
+  position: relative;
+}
+
+/* Top Fixed Ninja Scroll Timber Rod (Hassō) */
+.profile-makimono-top-rod {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  height: 22px;
+  margin: 0 -4px;
+  background: linear-gradient(
+    180deg,
+    var(--ink-primary) 0%,
+    var(--ink-secondary) 24%,
+    var(--ink-primary) 60%,
+    var(--ink-primary) 100%
+  );
+  border: 1.5px solid var(--ink-primary);
+  box-shadow: 0 8px 18px -8px rgba(20, 20, 19, 0.32);
+}
+
+.profile-makimono-knob {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--ink-primary);
+  border: 1.5px solid var(--bg-canvas);
+  box-shadow: 0 0 0 1px var(--ink-primary);
+}
+
+.profile-makimono-knob-left {
+  left: -10px;
+}
+
+.profile-makimono-knob-right {
+  right: -10px;
+}
+
+/* Unrolling Parchment Sheet: clipped dynamically to --scroll-clip (100% when closed -> 0% when fully in section) */
+.makimono-unroll-sheet {
+  position: relative;
+  clip-path: inset(0 0 var(--scroll-clip, 0%) 0);
+  will-change: clip-path;
+}
+
+/* Descending Cylindrical Ninja Scroll Roller (Jiku 軸):
+   Tracks the exact bottom edge of the unrolling parchment sheet via --scroll-open */
+.makimono-unroll-cylinder {
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  top: max(10px, calc(var(--scroll-open, 100%) - 14px));
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  height: 28px;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    var(--ink-primary) 0%,
+    var(--ink-secondary) 26%,
+    var(--ink-primary) 58%,
+    var(--ink-primary) 100%
+  );
+  border: 1.5px solid var(--ink-primary);
+  box-shadow:
+    0 -18px 28px -8px rgba(20, 20, 19, 0.34),
+    0 14px 26px -8px rgba(20, 20, 19, 0.32);
+  will-change: top;
+}
+
+.profile-makimono-spiral {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  border: 1.5px dashed var(--bg-canvas);
+  transform: rotate(var(--scroll-rot, 0deg));
+  will-change: transform;
+}
+
+/* Center Braided Obi Clasp & Shinobi Medallion (忍) on the rolling Ninja Scroll cylinder */
+.profile-roller-clasp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  background-color: var(--bg-canvas);
+  border: 1.5px solid var(--ink-primary);
+  margin: 0 auto;
+}
+
+.profile-roller-cord {
+  width: 3px;
+  height: 18px;
+  border-left: 1px solid var(--ink-primary);
+  border-right: 1px solid var(--ink-primary);
+}
+
+.profile-roller-medallion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1;
+  clip-path: polygon(
+    3px 0,
+    calc(100% - 3px) 0,
+    100% 3px,
+    100% calc(100% - 3px),
+    calc(100% - 3px) 100%,
+    3px 100%,
+    0 calc(100% - 3px),
+    0 3px
+  );
+}
+
+.profile-roller-medallion::before {
+  content: attr(data-kanji);
+}
+
+/* Kakejiku Top Braided Cord (Kakeo) & Wooden Peg (Kugi-kakushi) */
+.kakejiku-hanging-top {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 28px;
+  pointer-events: none;
+}
+
+.kakejiku-nail-peg {
+  width: 11px;
+  height: 11px;
+  background-color: var(--ink-primary);
+  border: 2px solid var(--bg-canvas);
+  box-shadow: 0 0 0 1.5px var(--ink-primary);
+  transform: rotate(45deg);
+  z-index: 2;
+}
+
+.kakejiku-cord-svg {
+  margin-top: -5px;
+  width: 78%;
+  height: 24px;
+}
+
+/* Top Hassō (八双) Horizontal Hanging Bar */
+.kakejiku-hasso-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  margin: 0 -4px;
+  background-color: var(--ink-primary);
+  border: 1px solid var(--ink-primary);
+}
+
+.kakejiku-hasso-cap {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 6px;
+  background-color: var(--ink-primary);
+  border: 1px solid var(--bg-canvas);
+}
+
+.kakejiku-hasso-cap-left {
+  left: -6px;
+}
+
+.kakejiku-hasso-cap-right {
+  right: -6px;
+}
+
+/* Scroll Brocade Mounting Border (Hyōgu 表具) */
+.kakejiku-brocade-frame {
+  border-left: 1.5px solid var(--ink-primary);
+  border-right: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-recessed);
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 10px,
+      var(--border-hairline) 10px,
+      var(--border-hairline) 11px
+    );
+}
+
+.kakejiku-portrait-window {
+  background-color: #e9e6de;
+}
+
+:root[data-theme='dark'] .kakejiku-portrait-window {
+  background-color: #151920;
+}
+
+/* Fūtai (風帯) Vertical Hanging Silk Tassel Strips */
+.kakejiku-futai {
+  position: absolute;
+  top: 0;
+  z-index: 25;
+  width: 10px;
+  height: 54px;
+  background-color: var(--ink-primary);
+  border-left: 1px solid var(--bg-canvas);
+  border-right: 1px solid var(--bg-canvas);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% calc(100% - 6px), 0 100%);
+  transform-origin: top center;
+  transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.kakejiku-futai-left {
+  left: 22%;
+}
+
+.kakejiku-futai-right {
+  right: 22%;
+}
+
+/* Japanese Byōbu Center Hinge Clasps (Chōtsugai 蝶番) bridging Left Photo Wing & Right Info Wing */
+.byobu-center-hinges {
+  position: absolute;
+  top: 68px;
+  bottom: 54px;
+  left: calc(41.666667% - 5px);
+  z-index: 25;
+  width: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.byobu-hinge-clasp {
+  width: 24px;
+  height: 10px;
+  background-color: var(--ink-primary);
+  border: 1.5px solid var(--bg-canvas);
+  box-shadow: 0 0 0 1px var(--ink-primary);
+}
+
+/* Compact 3-pill blueprint stamp strip in the unified 52px header */
+.koseki-stamp-strip {
+  align-items: center;
+  gap: 4px;
+}
+
+.koseki-stamp-pill {
+  padding: 2px 7px;
+  border: 1px solid var(--ink-primary);
+  background-color: var(--bg-recessed);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--ink-primary);
+}
+
+.koseki-stamp-pill-active {
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+}
+
+.kakejiku-scroll-assembly:hover .kakejiku-futai-left,
+.koseki-dossier-frame:hover .kakejiku-futai-left {
+  transform: rotate(5deg) scaleY(1.08);
+}
+
+.kakejiku-scroll-assembly:hover .kakejiku-futai-right,
+.koseki-dossier-frame:hover .kakejiku-futai-right {
+  transform: rotate(-5deg) scaleY(1.08);
+}
+
+.koseki-dossier-frame:hover .kakejiku-hover-kamon {
+  opacity: 0.42;
+  transform: scale(1) rotate(22deg);
+}
+
+.koseki-dossier-frame:hover .kakejiku-hover-seal {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0);
+}
+
+/* Top-left Woodblock Title Cartouche inside the scroll portrait */
+.kakejiku-title-cartouche {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 5px;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  box-shadow:
+    inset 0 0 0 1.5px var(--bg-canvas),
+    inset 0 0 0 2.5px var(--border-control);
+}
+
+.kakejiku-cartouche-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.kakejiku-cartouche-seal::before {
+  content: attr(data-kanji);
+}
+
+.kakejiku-cartouche-vertical {
+  writing-mode: vertical-rl;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  line-height: 1;
+  color: var(--ink-primary);
+}
+
+.kakejiku-cartouche-vertical::before {
+  content: attr(data-kanji);
+}
+
+/* Kamon Compass Ring inside the Kakejiku scroll on hover */
+.kakejiku-hover-kamon {
+  position: absolute;
+  top: 6%;
+  right: 6%;
+  z-index: 5;
+  width: 52%;
+  aspect-ratio: 1 / 1;
+  pointer-events: none;
+  opacity: 0.14;
+  transform: scale(0.9) rotate(0deg);
+  transition:
+    opacity 460ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 640ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kakejiku-scroll-assembly:hover .kakejiku-hover-kamon {
+  opacity: 0.42;
+  transform: scale(1) rotate(22deg);
+}
+
+/* Bottom-right Double Hanko Artist Seal Stamp */
+.kakejiku-hanko-pair {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.kakejiku-hanko-solid,
+.kakejiku-hanko-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.kakejiku-hanko-solid {
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  border: 1.5px solid var(--ink-primary);
+}
+
+.kakejiku-hanko-outline {
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  border: 1.5px solid var(--ink-primary);
+}
+
+.kakejiku-hanko-solid::before,
+.kakejiku-hanko-outline::before {
+  content: attr(data-kanji);
+}
+
+/* Verification stamp sliding up at the bottom center of the scroll on hover */
+.kakejiku-hover-seal {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  z-index: 20;
+  padding: 3px 10px;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  opacity: 0;
+  transform: translate3d(-50%, 8px, 0);
+  transition:
+    opacity 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kakejiku-hover-seal span::before {
+  content: attr(data-kanji);
+}
+
+.kakejiku-scroll-assembly:hover .kakejiku-hover-seal {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0);
+}
+
+/* Bottom Jiku (軸) Cylindrical Wooden Scroll Roller & Jikusaki End-Knobs */
+.kakejiku-jiku-roller {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 26px;
+  margin: 0 -6px;
+  background: linear-gradient(
+    180deg,
+    var(--ink-primary) 0%,
+    var(--ink-secondary) 22%,
+    var(--ink-primary) 55%,
+    var(--ink-primary) 100%
+  );
+  border: 1.5px solid var(--ink-primary);
+  box-shadow: 0 10px 22px -10px rgba(20, 20, 19, 0.35);
+}
+
+.kakejiku-jikusaki {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  width: 10px;
+  background-color: var(--ink-primary);
+  border: 1.5px solid var(--bg-canvas);
+}
+
+.kakejiku-jikusaki-left {
+  left: -10px;
+}
+
+.kakejiku-jikusaki-right {
+  right: -10px;
+}
+
+/* Right Vertical Hashira Spine Plaque alongside the Kakejiku scroll */
+.kakejiku-hashira-spine {
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 28px;
+  padding: 12px 6px;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  clip-path: polygon(
+    0 6px,
+    6px 0,
+    100% 0,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    0 100%
+  );
+}
+
+.kakejiku-spine-kanji {
+  writing-mode: vertical-rl;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--ink-secondary);
+}
+
+.kakejiku-spine-kanji::before {
+  content: attr(data-kanji);
+}
+
+/* Kiri-bako (桐箱) Paulownia Scroll Storage Box Plate under the Kakejiku scroll */
+.kakejiku-kiribako {
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  clip-path: polygon(
+    6px 0,
+    calc(100% - 6px) 0,
+    100% 6px,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    6px 100%,
+    0 calc(100% - 6px),
+    0 6px
+  );
+  box-shadow:
+    inset 0 0 0 2px var(--bg-canvas),
+    inset 0 0 0 3px var(--border-hairline);
+}
+
+/* Right Column: Japanese Shokunin Koseki (職人戸籍) Dossier Frame */
+.koseki-dossier-frame {
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  clip-path: polygon(
+    12px 0,
+    calc(100% - 12px) 0,
+    100% 12px,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    12px 100%,
+    0 calc(100% - 12px),
+    0 12px
+  );
+  box-shadow:
+    inset 0 0 0 3px var(--bg-canvas),
+    inset 0 0 0 4px var(--border-hairline);
+}
+
+.koseki-mini-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--ink-primary);
+  background-color: var(--bg-recessed);
+  color: var(--ink-primary);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.koseki-mini-seal::before {
+  content: attr(data-kanji);
+}
+
+/* Traditional 3-Box Japanese Architectural Blueprint Stamp Grid (承認印欄) */
+.koseki-stamp-grid {
+  display: inline-grid;
+  grid-template-columns: repeat(3, 38px);
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+}
+
+.koseki-stamp-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.koseki-stamp-cell + .koseki-stamp-cell {
+  border-left: 1px solid var(--ink-primary);
+}
+
+.koseki-stamp-header {
+  width: 100%;
+  padding: 1.5px 0;
+  border-bottom: 1px solid var(--ink-primary);
+  background-color: var(--bg-recessed);
+  text-align: center;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ink-secondary);
+}
+
+.koseki-stamp-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 3px 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  border: 1.2px solid var(--ink-primary);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--ink-primary);
+  transform: rotate(-8deg);
+}
+
+.koseki-stamp-active {
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  transform: rotate(6deg);
+}
+
+.koseki-vertical-watermark {
+  padding: 6px 5px;
+  border: 1px solid var(--border-control);
+  background-color: var(--bg-recessed);
+  writing-mode: vertical-rl;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  color: var(--ink-secondary);
+  opacity: 0.8;
+}
+
+.koseki-vertical-watermark span::before {
+  content: attr(data-kanji);
+}
+
+/* Shoin Manuscript Bio Box */
+.koseki-manuscript-box {
+  border: 1px solid var(--border-control);
+  border-left: 3px solid var(--ink-primary);
+  background-color: var(--bg-recessed);
+  clip-path: polygon(
+    0 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% 100%,
+    0 100%
+  );
+}
+
+/* Credential Wari-in Tally Seals */
+.koseki-credential-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px 4px 5px;
+  border: 1px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  clip-path: polygon(
+    4px 0,
+    calc(100% - 4px) 0,
+    100% 4px,
+    100% calc(100% - 4px),
+    calc(100% - 4px) 100%,
+    4px 100%,
+    0 calc(100% - 4px),
+    0 4px
+  );
+}
+
+.koseki-credential-kanji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  font-size: 9.5px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.koseki-credential-kanji::before {
+  content: attr(data-kanji);
+}
+
+/* 4-Card Koseki Registry Ledger */
+.koseki-ledger-card {
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  clip-path: polygon(
+    7px 0,
+    calc(100% - 7px) 0,
+    100% 7px,
+    100% calc(100% - 7px),
+    calc(100% - 7px) 100%,
+    7px 100%,
+    0 calc(100% - 7px),
+    0 7px
+  );
+  box-shadow:
+    inset 0 0 0 2px var(--bg-canvas),
+    inset 0 0 0 3px var(--border-hairline);
+  transition:
+    transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 200ms ease,
+    color 200ms ease,
+    box-shadow 220ms ease;
+}
+
+.koseki-ledger-card:hover {
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  transform: translateY(-3px);
+  box-shadow:
+    0 12px 24px -12px rgba(20, 20, 19, 0.28),
+    inset 0 0 0 2px var(--ink-primary),
+    inset 0 0 0 3px var(--bg-canvas);
+}
+
+.koseki-card-kanji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid currentColor;
+  background-color: var(--bg-recessed);
+  color: var(--ink-primary);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  clip-path: polygon(
+    4px 0,
+    calc(100% - 4px) 0,
+    100% 4px,
+    100% calc(100% - 4px),
+    calc(100% - 4px) 100%,
+    4px 100%,
+    0 calc(100% - 4px),
+    0 4px
+  );
+  transition:
+    transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 200ms ease,
+    color 200ms ease;
+}
+
+.koseki-card-kanji::before {
+  content: attr(data-kanji);
+}
+
+.koseki-ledger-card:hover .koseki-card-kanji {
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  border-color: var(--bg-canvas);
+  transform: rotate(-6deg) scale(1.06);
+}
+
+.koseki-status-dot {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: currentColor;
+}
+
+.koseki-status-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  border: 1px solid currentColor;
+  opacity: 0.55;
+}
+
+/* Out-of-the-Box Japanese Kifuda-kake (木札掛け) Tech Stack Arsenal Rack below Hero frame */
+.tech-kifuda-rack {
+  position: relative;
+}
+
+/* Vertical joinery struts connecting the Hero box bottom border to the Tech Stack rack */
+.tech-rack-strut {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 14px;
+  background-color: var(--ink-primary);
+  pointer-events: none;
+}
+
+.tech-rack-strut-left {
+  left: 18px;
+}
+
+.tech-rack-strut-center {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tech-rack-strut-right {
+  right: 18px;
+}
+
+/* Top suspension header beam of the Tech Stack rack */
+.tech-rack-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 10px;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  clip-path: polygon(
+    6px 0,
+    calc(100% - 6px) 0,
+    100% 6px,
+    100% 100%,
+    0 100%,
+    0 6px
+  );
+}
+
+.tech-guild-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  clip-path: polygon(
+    3px 0,
+    calc(100% - 3px) 0,
+    100% 3px,
+    100% calc(100% - 3px),
+    calc(100% - 3px) 100%,
+    3px 100%,
+    0 calc(100% - 3px),
+    0 3px
+  );
+}
+
+.tech-guild-seal::before {
+  content: attr(data-kanji);
+}
+
+.tech-rack-beam-line {
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  max-width: 26rem;
+}
+
+.tech-rack-rule {
+  flex: 1;
+  height: 1px;
+  background-color: var(--border-control);
+}
+
+.tech-rack-diamond {
+  width: 5px;
+  height: 5px;
+  border: 1px solid var(--ink-primary);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.tech-rack-chigiri {
+  width: 10px;
+  height: 6px;
+  background-color: var(--ink-primary);
+  clip-path: polygon(0 0, 48% 36%, 100% 0, 100% 100%, 48% 64%, 0 100%);
+  opacity: 0.78;
+  flex-shrink: 0;
+}
+
+/* Individual Japanese Ema / Kifuda carved wooden plaque for each technology */
+.tech-kifuda-card {
+  position: relative;
+  padding: 11px 12px 10px;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  /* Traditional Ema / Kifuda chamfered shoulders + notched bottom woodblock silhouette */
+  clip-path: polygon(
+    8px 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 5px),
+    calc(100% - 5px) 100%,
+    5px 100%,
+    0 calc(100% - 5px),
+    0 8px
+  );
+  box-shadow:
+    inset 0 0 0 2px var(--bg-canvas),
+    inset 0 0 0 3px var(--border-hairline);
+  transition:
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tech-kifuda-card:hover {
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  box-shadow:
+    0 12px 24px -10px rgba(20, 20, 19, 0.25),
+    inset 0 0 0 2px var(--ink-primary),
+    inset 0 0 0 3px var(--bg-canvas);
+}
+
+/* Wooden suspension peg connecting each plaque to the header rail */
+.tech-kifuda-peg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 12px;
+  height: 3px;
+  background-color: currentColor;
+  transform: translateX(-50%);
+  opacity: 0.75;
+}
+
+.tech-kifuda-hole {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  border: 1px solid currentColor;
+  transform: translateX(-50%);
+  opacity: 0.45;
+}
+
+/* Carved square Kanji stamp inside each tech plaque */
+.tech-kifuda-kanji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid currentColor;
+  background-color: var(--bg-recessed);
+  color: var(--ink-primary);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  clip-path: polygon(
+    3px 0,
+    calc(100% - 3px) 0,
+    100% 3px,
+    100% calc(100% - 3px),
+    calc(100% - 3px) 100%,
+    3px 100%,
+    0 calc(100% - 3px),
+    0 3px
+  );
+  transition:
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tech-kifuda-kanji::before {
+  content: attr(data-kanji);
+}
+
+.tech-kifuda-card:hover .tech-kifuda-kanji {
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  border-color: var(--bg-canvas);
+}
+
+/* Precision calibration gauge bar under each technology title */
+.tech-kifuda-gauge {
+  position: relative;
+  height: 2px;
+  width: 100%;
+  background-color: var(--border-subtle);
+  overflow: hidden;
+}
+
+.tech-kifuda-gauge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: currentColor;
+  transform: scaleX(0.28);
+  transform-origin: left center;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tech-kifuda-card:hover .tech-kifuda-gauge {
+  background-color: rgba(255, 255, 255, 0.22);
+}
+
+.tech-kifuda-card:hover .tech-kifuda-gauge::after {
+  transform: scaleX(1);
+}
+
+.tech-kifuda-corner {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  width: 6px;
+  height: 6px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  opacity: 0.45;
+}
+
+/* Bottom Kumiko closing rail with upturned Torii end finials */
+.tech-rack-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tech-rack-finial {
+  width: 12px;
+  height: 4px;
+  background-color: var(--ink-primary);
+  flex-shrink: 0;
+}
+
+.tech-rack-finial-left {
+  clip-path: polygon(0 0, 100% 35%, 100% 100%, 25% 100%);
+}
+
+.tech-rack-finial-right {
+  clip-path: polygon(0 35%, 100% 0, 75% 100%, 0 100%);
+}
+
+/* Out-of-the-Box Japanese Architectural Hero Outline Frame (欄間・組子・浮世絵版画枠) */
+.hero-poster-frame {
+  border: 1.5px solid var(--ink-primary);
+  box-shadow: 0 18px 40px -24px rgba(20, 20, 19, 0.18);
+}
+
+/* Inner Ukiyo-e Beri-waku double registration mat line */
+.hero-beriwaku-top {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  height: 1px;
+  background-color: var(--border-control);
+  z-index: 15;
+}
+
+.hero-beriwaku-left {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 6px;
+  width: 1px;
+  background-color: var(--border-control);
+  z-index: 15;
+}
+
+.hero-beriwaku-right {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  right: 6px;
+  width: 1px;
+  background-color: var(--border-control);
+  z-index: 15;
+}
+
+/* Bottom inner mat lines stop with diamond terminals before the suit hem so the portrait bottom stays 100% clean */
+.hero-beriwaku-bottom-left,
+.hero-beriwaku-bottom-right {
+  position: absolute;
+  bottom: 6px;
+  height: 1px;
+  width: clamp(2.5rem, 16%, 11rem);
+  background-color: var(--border-control);
+  z-index: 15;
+}
+
+.hero-beriwaku-bottom-left {
+  left: 6px;
+}
+
+.hero-beriwaku-bottom-right {
+  right: 6px;
+}
+
+.hero-beriwaku-bottom-left::after,
+.hero-beriwaku-bottom-right::before {
+  content: '';
+  position: absolute;
+  top: -2.5px;
+  width: 5px;
+  height: 5px;
+  background-color: var(--ink-primary);
+  transform: rotate(45deg);
+}
+
+.hero-beriwaku-bottom-left::after {
+  right: 0;
+}
+
+.hero-beriwaku-bottom-right::before {
+  left: 0;
+}
+
+/* Top-center Ranma / Chigiri architectural keystone plaque */
+.hero-ranma-keystone {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 22px;
+  padding: 0 12px;
+  transform: translateX(-50%);
+  background-color: var(--bg-canvas);
+  border-left: 1.5px solid var(--ink-primary);
+  border-right: 1.5px solid var(--ink-primary);
+  border-bottom: 1.5px solid var(--ink-primary);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - 6px) 100%,
+    6px 100%
+  );
+}
+
+.hero-ranma-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--ink-primary);
+  line-height: 1;
+}
+
+/* Japanese butterfly mortise-and-tenon joint (Chigiri 契り) */
+.hero-chigiri-joint {
+  width: 10px;
+  height: 6px;
+  background-color: var(--ink-primary);
+  clip-path: polygon(0 0, 48% 36%, 100% 0, 100% 100%, 48% 64%, 0 100%);
+  opacity: 0.82;
+}
+
+.hero-ranma-bars {
+  width: 7px;
+  height: 8px;
+  border-left: 1px solid var(--border-control);
+  border-right: 1px solid var(--border-control);
+}
+
+/* Left & Right vertical border Ukiyo-e Hashira margin seal tabs */
+.hero-hashira-seal {
+  position: absolute;
+  top: 50%;
+  z-index: 20;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 4px;
+  background-color: var(--bg-canvas);
+  border-top: 1.5px solid var(--ink-primary);
+  border-bottom: 1.5px solid var(--ink-primary);
+  transform: translateY(-50%);
+}
+
+.hero-hashira-left {
+  left: 0;
+  border-right: 1.5px solid var(--ink-primary);
+  clip-path: polygon(0 0, 100% 6px, 100% calc(100% - 6px), 0 100%);
+}
+
+.hero-hashira-right {
+  right: 0;
+  border-left: 1.5px solid var(--ink-primary);
+  clip-path: polygon(0 6px, 100% 0, 100% 100%, 0 calc(100% - 6px));
+}
+
+.hero-hashira-diamond {
+  width: 5px;
+  height: 5px;
+  border: 1px solid var(--ink-primary);
+  transform: rotate(45deg);
+}
+
+.hero-hashira-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.hero-hashira-stamp::before {
+  content: attr(data-kanji);
+}
+
+.hero-hashira-vertical {
+  writing-mode: vertical-rl;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  line-height: 1;
+  color: var(--ink-secondary);
+}
+
+.hero-hashira-vertical::before {
+  content: attr(data-kanji);
+}
+
+/* Bottom-left Hori-Suri (Carved & Printed) Ukiyo-e woodblock colophon bar */
+.hero-horisuri-bar {
+  position: absolute;
+  bottom: 0;
+  left: 54px;
+  z-index: 20;
+  align-items: center;
+  gap: 5px;
+  height: 20px;
+  padding: 0 9px;
+  background-color: var(--bg-canvas);
+  border-top: 1px solid var(--ink-primary);
+  border-left: 1px solid var(--ink-primary);
+  border-right: 1px solid var(--ink-primary);
+  clip-path: polygon(5px 0, calc(100% - 5px) 0, 100% 100%, 0 100%);
+}
+
+.hero-horisuri-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 13px;
+  height: 13px;
+  border: 1px solid var(--ink-primary);
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink-primary);
+}
+
+.hero-horisuri-stamp::before {
+  content: attr(data-kanji);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-kumiko-corner {
+    transition:
+      transform 760ms cubic-bezier(0.22, 1, 0.36, 1) 240ms,
+      opacity 540ms ease 240ms;
+  }
+
+  .hero-japanese-frame[data-entered='false'] .hero-kumiko-corner {
+    opacity: 0;
+    transform: scale(0.84);
+  }
+
+  /* Section 2 (01 PROFIL) interactive 3D gallery print tilt, optical sheen & corner registration marks */
+  .profile-tilt-stage {
+    perspective: 1000px;
+  }
+
+  .profile-tilt-card {
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: box-shadow 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .profile-tilt-card:hover {
+    box-shadow: 0 24px 48px -22px rgba(20, 20, 19, 0.28);
+  }
+
+  :root[data-theme='dark'] .profile-tilt-card:hover {
+    box-shadow: 0 26px 52px -18px rgba(0, 0, 0, 0.72);
+  }
+
+  .profile-tilt-card:hover .curtain-media[data-reveal='visible'] img {
+    transform: scale(1.045);
+    transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .profile-pointer-sheen {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      280px circle at var(--px, 50%) var(--py, 50%),
+      rgba(255, 255, 255, 0.34),
+      transparent 68%
+    );
+    transition: opacity 280ms ease;
+  }
+
+  :root[data-theme='dark'] .profile-pointer-sheen {
+    background: radial-gradient(
+      280px circle at var(--px, 50%) var(--py, 50%),
+      rgba(122, 178, 255, 0.2),
+      transparent 68%
+    );
+  }
+
+  .profile-tilt-card:hover .profile-pointer-sheen {
+    opacity: 1;
+  }
+
+  .profile-corner-mark {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+    border-color: var(--ink-primary);
+    opacity: 0;
+    transition:
+      opacity 280ms ease,
+      transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .profile-tilt-card:hover .profile-corner-mark {
+    opacity: 0.75;
+    transform: translate(0, 0);
+  }
+
+  /* Organic single-fire entrance for botanical ink accents in Hero */
+  .botanical-rise[data-entered='false'] {
+    opacity: 0 !important;
+    transform: translateY(28px) scale(0.97);
+  }
+
+  .botanical-rise[data-entered='true'] {
+    transform: translateY(0) scale(1);
+    transition:
+      transform 1150ms cubic-bezier(0.22, 1, 0.36, 1) var(--stagger, 320ms),
+      opacity 900ms ease var(--stagger, 320ms);
+  }
+
+  .botanical-drape[data-entered='false'] {
+    opacity: 0 !important;
+    transform: translateY(-20px) rotate(-2deg);
+    transform-origin: top right;
+  }
+
+  .botanical-drape[data-entered='true'] {
+    transform: translateY(0) rotate(0deg);
+    transform-origin: top right;
+    transition:
+      transform 1150ms cubic-bezier(0.22, 1, 0.36, 1) var(--stagger, 380ms),
+      opacity 900ms ease var(--stagger, 380ms);
+  }
+
+  /* Hero portrait scale-lift reveal */
+  .hero-portrait-reveal[data-entered='false'] {
+    opacity: 0;
+    transform: translateY(28px) scale(0.93);
+  }
+
+  .hero-portrait-reveal[data-entered='true'] {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition:
+      transform 820ms cubic-bezier(0.22, 1, 0.36, 1) 180ms,
+      opacity 620ms ease 180ms;
+  }
+
+  /* Corner editorial fade-up staggers */
+  .hero-stagger[data-entered='false'] {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .hero-stagger[data-entered='true'] {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      transform 640ms cubic-bezier(0.22, 1, 0.36, 1) var(--stagger, 260ms),
+      opacity 520ms ease var(--stagger, 260ms);
+  }
+
+  /* Bottom-to-top clip-path & upward rise reveal for Section 2 (01 PROFIL) portrait */
+  .curtain-media[data-reveal='hidden'] {
+    opacity: 0;
+    clip-path: inset(100% 0 0 0);
+  }
+
+  .curtain-media[data-reveal='visible'] {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transition:
+      clip-path 1080ms cubic-bezier(0.22, 1, 0.36, 1) 80ms,
+      opacity 560ms ease 80ms;
+  }
+
+  .curtain-media[data-reveal='hidden'] img {
+    transform: translateY(56px) scale(1.06);
+  }
+
+  .curtain-media[data-reveal='visible'] img {
+    transform: translateY(0) scale(1);
+    transition: transform 1160ms cubic-bezier(0.22, 1, 0.36, 1) 80ms;
+  }
+
+  /* Hairline left-to-right rule draw */
+  .hairline-draw[data-reveal='hidden'] {
+    transform: scaleX(0);
+  }
+
+  .hairline-draw[data-reveal='visible'] {
+    transform: scaleX(1);
+    transition: transform 720ms cubic-bezier(0.22, 1, 0.36, 1) var(--stagger, 0ms);
+  }
+
+  /* Floating hover preview card on 02 KARYA */
+  .works-hover-preview {
+    opacity: 0;
+    clip-path: inset(12% 8% 12% 8% round 14px);
+    transition:
+      opacity 220ms ease,
+      clip-path 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity;
+  }
+
+  .works-hover-preview[data-active='true'] {
+    opacity: 1;
+    clip-path: inset(0 0 0 0 round 14px);
+  }
+
+  /* Gallery card image hover zoom */
+  .gallery-card-media img {
+    transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .gallery-card-media:hover img,
+  .gallery-card-media:focus-visible img {
+    transform: scale(1.045);
+  }
+
+  /* Owner-approved R-39 override: replace native pointer with blending dot on desktop mouse devices. */
+  @media (hover: hover) and (pointer: fine) {
+    html.custom-cursor-active,
+    html.custom-cursor-active body,
+    html.custom-cursor-active a[href],
+    html.custom-cursor-active button:not(:disabled),
+    html.custom-cursor-active [role='button']:not([aria-disabled='true']),
+    html.custom-cursor-active summary,
+    html.custom-cursor-active label[for],
+    html.custom-cursor-active .gallery-strip {
+      cursor: none;
+    }
+
+    html.custom-cursor-active input,
+    html.custom-cursor-active textarea {
+      cursor: text;
+    }
+
+    html.custom-cursor-active :disabled,
+    html.custom-cursor-active [aria-disabled='true'] {
+      cursor: not-allowed;
+    }
+
+    /* Native <dialog> renders in the browser Top Layer above z-index; restore pointer inside open dialogs. */
+    html.custom-cursor-active dialog[open] {
+      cursor: auto;
+    }
+
+    html.custom-cursor-active dialog[open] a[href],
+    html.custom-cursor-active dialog[open] button:not(:disabled) {
+      cursor: pointer;
+    }
+  }
+
+  .editorial-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 60;
+    pointer-events: none;
+    border-radius: 9999px;
+    background-color: #ffffff;
+    mix-blend-mode: difference;
+    opacity: 0;
+    will-change: transform, width, height, opacity;
+    transition:
+      width 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      height 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 160ms ease;
+  }
+
+  .editorial-cursor[data-visible='true'] {
+    opacity: 1;
+  }
+
+  @media (min-width: 640px) {
+    .hero-wordmark-parallax {
+      transform: translate3d(0, calc(-50% + var(--hero-wordmark-y, 0px)), 0);
+    }
+
+    .hero-portrait-parallax {
+      transform: translate3d(0, var(--hero-portrait-y, 0px), 0);
+    }
+  }
+}
+
+/* Out-of-the-Box Japanese Architectural Navbar with 4-Stage Shinobi Makimono (Ninja Scroll) Choreography:
+   Stage 1 (to-bottom-1-gate): Shoji/Kumiko gate closes from bottom to top
+   Stage 2 (to-bottom-2-roll): Gate rolls shut horizontally into a compact Ninja Scroll with cylindrical rollers
+   Stage 3 (to-bottom-3-move): Closed Ninja Scroll travels smoothly from top to bottom
+   Stage 4 (to-bottom-4-unroll): Ninja Scroll unrolls horizontally at the bottom & reveals dock controls */
+.nav-dock-wrapper {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  z-index: 40;
+  width: min(calc(100vw - 1.5rem), 72.5rem);
+  transform: translate3d(-50%, 0, 0);
+  will-change: transform, width;
+}
+
+@media (min-width: 640px) {
+  .nav-dock-wrapper {
+    width: min(calc(100vw - 2rem), 72.5rem);
+  }
+}
+
+/* Position stays at top during Stage 1 (gate closing) and Stage 2 (rolling shut into Ninja Scroll),
+   then moves down to the bottom in Stage 3 (to-bottom-3-move), Stage 4 (to-bottom-4-unroll), and bottom-idle */
+.nav-dock-wrapper[data-phase='to-bottom-3-move'],
+.nav-dock-wrapper[data-phase='to-bottom-4-unroll'],
+.nav-dock-wrapper[data-phase='bottom-idle'],
+.nav-dock-wrapper[data-phase='to-top-1-roll'] {
+  width: min(calc(100vw - 2rem), 22.5rem);
+  transform: translate3d(
+    -50%,
+    calc(100dvh - 100% - 30px - env(safe-area-inset-bottom, 0px)),
+    0
+  );
+}
+
+@media (min-width: 1024px) {
+  .nav-dock-wrapper[data-phase='to-bottom-3-move'],
+  .nav-dock-wrapper[data-phase='to-bottom-4-unroll'],
+  .nav-dock-wrapper[data-phase='bottom-idle'],
+  .nav-dock-wrapper[data-phase='to-top-1-roll'] {
+    width: min(calc(100vw - 3rem), 48.5rem);
+  }
+}
+
+/* Top Torii / Kamoi architectural double-beam lintel above the navbar */
+.noren-kamoi-beam {
+  position: relative;
+  height: 9px;
+  margin: 0 -2px -1px;
+  pointer-events: none;
+  transition:
+    opacity 220ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-dock-wrapper:not([data-phase='top-idle']):not([data-phase='to-top-4-gate']) .noren-kamoi-beam {
+  opacity: 0;
+  transform: scaleX(0.9) translateY(5px);
+}
+
+.noren-kamoi-rail {
+  position: absolute;
+  inset: 0 6px 3px;
+  background-color: var(--ink-primary);
+  clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 100%, 0 100%);
+}
+
+.noren-kamoi-rail::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 1px;
+  height: 1px;
+  background-color: var(--bg-canvas);
+  opacity: 0.45;
+}
+
+.noren-kamoi-finial {
+  position: absolute;
+  top: -2px;
+  width: 14px;
+  height: 7px;
+  background-color: var(--ink-primary);
+}
+
+.noren-kamoi-finial-left {
+  left: 0;
+  clip-path: polygon(0 0, 100% 25%, 100% 100%, 25% 100%);
+}
+
+.noren-kamoi-finial-right {
+  right: 0;
+  clip-path: polygon(0 25%, 100% 0, 75% 100%, 0 100%);
+}
+
+.noren-kamoi-peg {
+  position: absolute;
+  top: 4px;
+  width: 3px;
+  height: 7px;
+  background-color: var(--ink-primary);
+}
+
+.noren-kamoi-peg-left {
+  left: 28px;
+}
+
+.noren-kamoi-peg-right {
+  right: 28px;
+}
+
+/* Shinobi Makimono (Ninja Scroll) cylindrical rollers (Jiku 軸) on left & right */
+.makimono-roller {
+  position: absolute;
+  top: -6px;
+  bottom: -6px;
+  width: 11px;
+  z-index: 30;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    var(--ink-primary) 0%,
+    var(--bg-canvas) 28%,
+    var(--ink-primary) 58%,
+    var(--ink-primary) 100%
+  );
+  border: 1.5px solid var(--ink-primary);
+  box-shadow: 0 6px 16px rgba(14, 16, 19, 0.28);
+  opacity: 0;
+  transform: scaleY(0.5);
+  transition:
+    left 280ms cubic-bezier(0.65, 0, 0.35, 1),
+    right 280ms cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 180ms ease,
+    transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.makimono-roller::before,
+.makimono-roller::after {
+  content: '';
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  height: 5px;
+  background-color: var(--ink-primary);
+  border: 1px solid var(--bg-canvas);
+}
+
+.makimono-roller::before {
+  top: -5px;
+}
+
+.makimono-roller::after {
+  bottom: -5px;
+}
+
+.makimono-roller-left {
+  left: -6px;
+}
+
+.makimono-roller-right {
+  right: -6px;
+}
+
+/* Rollers appear as soon as the gate closes and remain visible in the scroll states */
+.nav-dock-wrapper[data-phase='to-bottom-1-gate'] .makimono-roller,
+.nav-dock-wrapper[data-phase='to-bottom-2-roll'] .makimono-roller,
+.nav-dock-wrapper[data-phase='to-bottom-3-move'] .makimono-roller,
+.nav-dock-wrapper[data-phase='to-bottom-4-unroll'] .makimono-roller,
+.nav-dock-wrapper[data-phase='bottom-idle'] .makimono-roller,
+.nav-dock-wrapper[data-phase='to-top-1-roll'] .makimono-roller,
+.nav-dock-wrapper[data-phase='to-top-2-move'] .makimono-roller,
+.nav-dock-wrapper[data-phase='to-top-3-unroll'] .makimono-roller {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* When the Ninja Scroll is rolled shut (Stage 2 & Stage 3), the two rollers clamp inward to the center tube */
+.nav-dock-wrapper[data-phase='to-bottom-2-roll'] .makimono-roller-left,
+.nav-dock-wrapper[data-phase='to-bottom-3-move'] .makimono-roller-left,
+.nav-dock-wrapper[data-phase='to-top-1-roll'] .makimono-roller-left,
+.nav-dock-wrapper[data-phase='to-top-2-move'] .makimono-roller-left {
+  left: calc(41% - 7px);
+}
+
+.nav-dock-wrapper[data-phase='to-bottom-2-roll'] .makimono-roller-right,
+.nav-dock-wrapper[data-phase='to-bottom-3-move'] .makimono-roller-right,
+.nav-dock-wrapper[data-phase='to-top-1-roll'] .makimono-roller-right,
+.nav-dock-wrapper[data-phase='to-top-2-move'] .makimono-roller-right {
+  right: calc(41% - 7px);
+}
+
+/* Chamfered octagonal Japanese Kifuda woodblock frame (8-vertex polygon so rolling shut interpolates at 60fps) */
+.nav-dock-surface.noren-glass-frame {
+  border-radius: 0;
+  border: 1.5px solid var(--ink-primary);
+  clip-path: polygon(
+    calc(0% + 10px) 0%,
+    calc(100% - 10px) 0%,
+    100% 10px,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    calc(0% + 10px) 100%,
+    0% calc(100% - 10px),
+    0% 10px
+  );
+  box-shadow:
+    0 14px 32px -14px rgba(20, 20, 19, 0.22),
+    inset 0 0 0 3px var(--bg-canvas),
+    inset 0 0 0 4px var(--border-subtle);
+}
+
+.nav-dock-wrapper[data-docked='true'] .nav-dock-surface.noren-glass-frame {
+  clip-path: polygon(
+    calc(0% + 6px) 0%,
+    calc(100% - 6px) 0%,
+    100% 6px,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    calc(0% + 6px) 100%,
+    0% calc(100% - 6px),
+    0% 6px
+  );
+  box-shadow:
+    0 24px 48px -12px rgba(14, 16, 19, 0.34),
+    inset 0 0 0 3px var(--bg-canvas),
+    inset 0 0 0 4px var(--border-subtle);
+}
+
+/* Rolled-shut Ninja Scroll tube geometry during Stage 2 (roll shut) and Stage 3 (traveling down/up) */
+.nav-dock-wrapper[data-phase='to-bottom-2-roll'] .nav-dock-surface.noren-glass-frame,
+.nav-dock-wrapper[data-phase='to-bottom-3-move'] .nav-dock-surface.noren-glass-frame,
+.nav-dock-wrapper[data-phase='to-top-1-roll'] .nav-dock-surface.noren-glass-frame,
+.nav-dock-wrapper[data-phase='to-top-2-move'] .nav-dock-surface.noren-glass-frame {
+  clip-path: polygon(
+    calc(41% + 2px) 0%,
+    calc(59% - 2px) 0%,
+    59% 2px,
+    59% calc(100% - 2px),
+    calc(59% - 2px) 100%,
+    calc(41% + 2px) 100%,
+    41% calc(100% - 2px),
+    41% 2px
+  );
+}
+
+/* Japanese Shoji/Kumiko Gate Shutter inside the navbar:
+   Closes from bottom to top (translateY(102%) -> translateY(0%)) before rolling into the Ninja Scroll */
+.navbar-shoji-shutter {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  background-color: var(--bg-canvas);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 22px,
+      var(--border-subtle) 22px,
+      var(--border-subtle) 23px
+    ),
+    linear-gradient(
+      180deg,
+      transparent 48%,
+      var(--border-subtle) 48%,
+      var(--border-subtle) 52%,
+      transparent 52%
+    );
+  transform: translate3d(0, 104%, 0);
+  transition: transform 230ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Stage 1 (gate closes bottom-to-top), Stage 2 (scroll rolls shut), Stage 3 (scroll moves down) keep shutter closed */
+.nav-dock-wrapper[data-phase='to-bottom-1-gate'] .navbar-shoji-shutter,
+.nav-dock-wrapper[data-phase='to-bottom-2-roll'] .navbar-shoji-shutter,
+.nav-dock-wrapper[data-phase='to-bottom-3-move'] .navbar-shoji-shutter,
+.nav-dock-wrapper[data-phase='to-top-1-roll'] .navbar-shoji-shutter,
+.nav-dock-wrapper[data-phase='to-top-2-move'] .navbar-shoji-shutter,
+.nav-dock-wrapper[data-phase='to-top-3-unroll'] .navbar-shoji-shutter {
+  transform: translate3d(0, 0%, 0);
+}
+
+.navbar-shutter-lead-rail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background-color: var(--ink-primary);
+}
+
+.navbar-shutter-bottom-rail {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--ink-primary);
+}
+
+/* Center Ninja Scroll Obi Clasp & Shinobi Medallion (忍) visible on the closed gate & rolled scroll */
+.shinobi-scroll-clasp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background-color: var(--bg-canvas);
+  border: 1.5px solid var(--ink-primary);
+}
+
+.shinobi-obi-cord {
+  width: 3px;
+  height: 24px;
+  border-left: 1px solid var(--ink-primary);
+  border-right: 1px solid var(--ink-primary);
+}
+
+.shinobi-crest-medallion {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  clip-path: polygon(
+    4px 0,
+    calc(100% - 4px) 0,
+    100% 4px,
+    100% calc(100% - 4px),
+    calc(100% - 4px) 100%,
+    4px 100%,
+    0 calc(100% - 4px),
+    0 4px
+  );
+}
+
+.shinobi-crest-medallion::before {
+  content: attr(data-kanji);
+}
+
+/* Kumiko corner registration ticks inside the frame */
+.noren-corner-tick {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  z-index: 2;
+  border-color: var(--ink-primary);
+  opacity: 0.55;
+}
+
+.noren-corner-tl {
+  top: 6px;
+  left: 6px;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+
+.noren-corner-tr {
+  top: 6px;
+  right: 6px;
+  border-top: 1px solid;
+  border-right: 1px solid;
+}
+
+.noren-corner-bl {
+  bottom: 6px;
+  left: 6px;
+  border-bottom: 1px solid;
+  border-left: 1px solid;
+}
+
+.noren-corner-br {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+
+/* Carved Square Japanese Hanko Stamp Seal on the left */
+.hanko-seal-box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--ink-primary);
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  clip-path: polygon(
+    4px 0,
+    calc(100% - 4px) 0,
+    100% 4px,
+    100% calc(100% - 4px),
+    calc(100% - 4px) 100%,
+    4px 100%,
+    0 calc(100% - 4px),
+    0 4px
+  );
+  transition:
+    background-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hanko-seal-box::before {
+  content: attr(data-kanji);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.hanko-seal-box::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 1px solid var(--bg-canvas);
+  opacity: 0.45;
+  pointer-events: none;
+  transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.noren-brand-seal:hover .hanko-seal-box::after {
+  opacity: 0.85;
+}
+
+/* Vertical two-character Japanese Mokuroku seal stamp */
+.noren-vertical-cartouche {
+  align-items: center;
+  justify-content: center;
+  padding: 3px 4px;
+  border: 1px solid var(--border-control);
+  background-color: var(--bg-recessed);
+}
+
+.noren-vertical-cartouche::before {
+  content: attr(data-kanji);
+  writing-mode: vertical-rl;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  color: var(--ink-secondary);
+}
+
+/* Mobile docked active badge Kanji prefix */
+.noren-mobile-active::before {
+  content: '[' attr(data-kanji) '] ';
+  color: var(--ink-secondary);
+}
+
+/* Center Hanging Kifuda / Noren Talisman Slips (木札・短冊) */
+.noren-kifuda-rail {
+  position: relative;
+}
+
+/* Horizontal cord line across the top of the Kifuda slips */
+.noren-kifuda-rail::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  right: 6px;
+  height: 1px;
+  background-color: var(--border-control);
+  pointer-events: none;
+}
+
+.kifuda-slip {
+  position: relative;
+  border: 1px solid var(--border-control);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  /* Chamfered top corners like a traditional Japanese wooden Kifuda shrine plaque */
+  clip-path: polygon(
+    6px 0,
+    calc(100% - 6px) 0,
+    100% 6px,
+    100% 100%,
+    0 100%,
+    0 6px
+  );
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Active Kifuda slip: solid woodblock sumi-ink inversion */
+.kifuda-slip[data-active='true'] {
+  background-color: var(--ink-primary);
+  border-color: var(--ink-primary);
+  color: var(--bg-canvas);
+}
+
+.kifuda-slip:not([data-active='true']):hover {
+  background-color: var(--bg-recessed);
+  border-color: var(--ink-primary);
+}
+
+/* Punched cord hole at top center of each Kifuda plaque */
+.kifuda-cord-hole {
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  border: 1px solid currentColor;
+  opacity: 0.45;
+  transform: translateX(-50%);
+}
+
+/* Formal Japanese Daiji numeral stamp inside each Kifuda plaque */
+.kifuda-kanji-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid currentColor;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0.78;
+  transition:
+    background-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kifuda-slip:not([data-active='true']):hover .kifuda-kanji-badge {
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+  opacity: 1;
+}
+
+.kifuda-kanji-badge::before {
+  content: attr(data-kanji);
+}
+
+/* Bottom seal bar inside each Kifuda plaque */
+.kifuda-bottom-notch {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: 2px;
+  height: 1.5px;
+  background-color: currentColor;
+  opacity: 0.22;
+  transform: scaleX(0.55);
+  transform-origin: center;
+  transition:
+    opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kifuda-slip[data-active='true'] .kifuda-bottom-notch,
+.kifuda-slip:hover .kifuda-bottom-notch {
+  opacity: 0.9;
+  transform: scaleX(1);
+}
+
+/* Right Andon Lantern Theme Switch & Mobile Mokuroku Trigger */
+.andon-theme-switch,
+.andon-menu-trigger {
+  position: relative;
+  border: 1px solid var(--ink-primary);
+  background-color: var(--bg-canvas);
+  clip-path: polygon(
+    6px 0,
+    calc(100% - 6px) 0,
+    100% 6px,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    6px 100%,
+    0 calc(100% - 6px),
+    0 6px
+  );
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.andon-theme-switch::before,
+.andon-menu-trigger::before {
+  content: attr(data-kanji);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--border-control);
+  background-color: var(--bg-recessed);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink-secondary);
+  transition:
+    background-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.andon-theme-switch:hover,
+.andon-menu-trigger:hover {
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+}
+
+.andon-theme-switch:hover::before,
+.andon-menu-trigger:hover::before {
+  border-color: var(--bg-canvas);
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+}
+
+/* Mobile Byobu / Shoji unfolding drawer */
+.noren-mobile-drawer {
+  border-radius: 0;
+  border: 1.5px solid var(--ink-primary);
+  clip-path: polygon(
+    8px 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px),
+    0 8px
+  );
+}
+
+.kifuda-mobile-row {
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
+  color: var(--ink-primary);
+  clip-path: polygon(
+    5px 0,
+    calc(100% - 5px) 0,
+    100% 5px,
+    100% calc(100% - 5px),
+    calc(100% - 5px) 100%,
+    5px 100%,
+    0 calc(100% - 5px),
+    0 5px
+  );
+  transition:
+    background-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kifuda-mobile-row[data-active='true'] {
+  border-color: var(--ink-primary);
+  background-color: var(--ink-primary);
+  color: var(--bg-canvas);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-dock-wrapper {
+    transition:
+      transform 290ms cubic-bezier(0.22, 1, 0.36, 1),
+      width 280ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  .nav-dock-surface {
+    transition:
+      clip-path 280ms cubic-bezier(0.65, 0, 0.35, 1),
+      box-shadow 280ms ease;
+  }
+
+  .nav-dock-wrapper[data-phase='to-bottom-4-unroll'] .navbar-shoji-shutter {
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1) 90ms;
+  }
+
+  .dock-item {
+    transition:
+      background-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .editorial-cursor {
+    display: none;
+  }
+}
+
+/* Circular View Transition & smooth fallback crossfade for Light <-> Dark switch */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-transitioning,
+  html.theme-transitioning *,
+  html.theme-transitioning *::before,
+  html.theme-transitioning *::after {
+    transition:
+      background-color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 340ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  .theme-icon-swap {
+    display: inline-flex;
+    animation: theme-icon-pop 340ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes theme-icon-pop {
+    from {
+      opacity: 0;
+      transform: rotate(-38deg) scale(0.76);
+    }
+    to {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+  }
+}

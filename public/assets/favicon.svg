@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <!-- Outer Warm Washi Mat Chamfered Octagon (ensures high contrast on both dark & light browser tab bars) -->
+  <polygon
+    points="10,1 54,1 63,10 63,54 54,63 10,63 1,54 1,10"
+    fill="#F6F5F1"
+    stroke="#141413"
+    stroke-width="2"
+  />
+  <!-- Inner Sumi-Ink Carved Hanko Block -->
+  <polygon
+    points="12,4 52,4 60,12 60,52 52,60 12,60 4,52 4,12"
+    fill="#141413"
+  />
+  <!-- Inner Washi Double-Line Kumiko Seal Frame -->
+  <polygon
+    points="15,8 49,8 56,15 56,49 49,56 15,56 8,49 8,15"
+    fill="none"
+    stroke="#F6F5F1"
+    stroke-width="1.5"
+    stroke-opacity="0.82"
+  />
+  <!-- Corner Kumiko Registration Notches -->
+  <path
+    d="M12 18V12H18M46 12H52V18M52 46V52H46M18 52H12V46"
+    stroke="#F6F5F1"
+    stroke-width="1.4"
+    stroke-opacity="0.55"
+  />
+  <!-- Carved Geometric Katakana 'リ' (Ri - Rifqi) in Crisp Vector Paths -->
+  <path
+    d="M23 18.5H28.2V35.5H23V18.5Z"
+    fill="#F6F5F1"
+  />
+  <path
+    d="M36.5 17.5H41.8V32.5C41.8 41.2 37.2 46.8 27.6 49.6L25.2 45.1C33.1 42.9 36.5 38.8 36.5 32.2V17.5Z"
+    fill="#F6F5F1"
+  />
+</svg>

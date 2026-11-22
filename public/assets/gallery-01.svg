@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="560" viewBox="0 0 420 560" fill="none">
+  <rect width="420" height="560" fill="#EAE8E1" />
+  <rect x="28" y="28" width="364" height="504" fill="#FFFFFF" stroke="#D4D1C8" stroke-width="1.2" />
+  <rect x="52" y="56" width="316" height="220" fill="#F6F5F1" stroke="#D4D1C8" stroke-width="1" />
+  <line x1="52" y1="308" x2="368" y2="308" stroke="#141413" stroke-opacity="0.2" stroke-width="1" />
+  <rect x="52" y="332" width="146" height="168" fill="#F6F5F1" stroke="#0F52BA" stroke-opacity="0.3" stroke-width="1.2" />
+  <rect x="222" y="332" width="146" height="168" fill="#F6F5F1" stroke="#D4D1C8" stroke-width="1" />
+  <text x="210" y="172" text-anchor="middle" fill="#141413" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13">[GALERI 01 / ANTARMUKA]</text>
+</svg>

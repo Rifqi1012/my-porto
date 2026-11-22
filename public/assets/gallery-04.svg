@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="560" viewBox="0 0 420 560" fill="none">
+  <rect width="420" height="560" fill="#E5E4DE" />
+  <circle cx="210" cy="240" r="120" fill="#0F52BA" fill-opacity="0.1" stroke="#0F52BA" stroke-opacity="0.32" stroke-width="1.4" />
+  <rect x="74" y="166" width="272" height="168" rx="22" fill="#FFFFFF" fill-opacity="0.86" stroke="#141413" stroke-opacity="0.22" stroke-width="1.2" />
+  <text x="210" y="256" text-anchor="middle" fill="#141413" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13">[GALERI 04 / PROTOTIPE]</text>
+  <text x="210" y="458" text-anchor="middle" fill="#52524E" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11">GANTI public/assets/gallery-04.svg</text>
+</svg>

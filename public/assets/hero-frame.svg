@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="540" viewBox="0 0 420 540" fill="none">
+  <rect width="420" height="540" rx="22" fill="#E9E7DF" />
+  <rect x="16" y="16" width="388" height="508" rx="16" stroke="#141413" stroke-opacity="0.2" stroke-width="1.2" />
+  <circle cx="210" cy="205" r="88" fill="#F6F5F1" stroke="#141413" stroke-opacity="0.3" stroke-width="1.2" />
+  <path d="M108 430C132 360 168 330 210 330C252 330 288 360 312 430" fill="#F6F5F1" stroke="#141413" stroke-opacity="0.3" stroke-width="1.2" />
+  <line x1="52" y1="454" x2="368" y2="454" stroke="#141413" stroke-opacity="0.2" stroke-width="1" />
+  <text x="210" y="210" text-anchor="middle" fill="#141413" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" letter-spacing="1">[POTRET SAMPUL]</text>
+  <text x="210" y="484" text-anchor="middle" fill="#52524E" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11">GANTI public/assets/hero-frame.svg</text>
+</svg>
