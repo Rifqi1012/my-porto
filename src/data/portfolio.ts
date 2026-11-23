@@ -98,7 +98,7 @@ export const PROJECTS: ProjectItem[] = [
     client: "PT. SIDOMULYO SELARAS TBK",
     summary:
       "Aplikasi web portal internal yang mendigitalisasi dan mengotomatisasi proses evaluasi kinerja karyawan berbasis metode Analytical Hierarchy Process (AHP), menggantikan rekapitulasi formulir manual menjadi sistem yang terukur, objektif, dan auditable.",
-    stack: ["IoT", "C++", "Next.js", "TypeScript", "Tailwind CSS"],
+    stack: ["Next.js", "TypeScript", "Tailwind"],
     image: {
       src: "/assets/ahp.png",
       alt: "Pratinjau proyek Sistem Penilaian Kinerja Karyawan",
